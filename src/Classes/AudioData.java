@@ -1,27 +1,51 @@
 package Classes;
 
-//Audiovizuális anyag osztálya
+/**
+ *Audiovizuális anyag osztálya
+ */
 public class AudioData {
-    //Mesterséges ID
+    /**
+    *Mesterséges ID
+    */
     int Id;
-    //Anyag neve
+    /**
+     *Anyag neve
+     */
     String Name;
-    //Előadó neve
+    /**
+     *Előadó neve
+     */
     String Artist;
-    //Kiadás éve
+    /**
+     *Kiadás éve
+     */
     int ReleaseYear;
-    //Anyag zenei stílusa
+    /**
+     *Anyag zenei stílusa
+     */
     String Style;
-    //Anyag tárolási típusa
+    /**
+     *Anyag tárolási típusa
+     */
     Enums.Audiotype Type;
-    //Kölcsönözhető-e
+    /**
+     *Kölcsönözhető-e
+     */
     Boolean Borrowable;
-    //Kölcsönző IDja
+    /**
+     *Kölcsönző IDja
+     */
     int BorrowerId;
-    //Kölcsönző neve
+    /**
+     *Kölcsönző neve
+     */
     String BorrowerName;
-    //Van-e borítókép
+    /**
+     *Van-e borítókép
+     */
     Boolean HasCover;
-    //Van-e hanganyag tárolva hozzá
+    /**
+     *Van-e hanganyag tárolva hozzá
+     */
     Boolean HasAudio;
 }

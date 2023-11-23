@@ -1,8 +1,9 @@
 import Views.LoginFrame;
+import Views.MainFrame;
 
 public class Main {
     public static void main(String[] args) {
-        LoginFrame frame = new LoginFrame();
+        MainFrame frame = new MainFrame();
         frame.setVisible(true);
     }
 }

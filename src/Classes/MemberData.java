@@ -2,16 +2,28 @@ package Classes;
 
 import java.util.*;
 
-//Hangkölcsönző tag osztálya
+/**
+ *Hangkölcsönző tag osztálya
+ */
 public class MemberData {
-    //Mesterséges ID
+    /**
+     *Mesterséges ID
+     */
     int Id;
-    //Tag neve
+    /**
+     *Tag neve
+     */
     String Name;
-    //Tag születési dátuma
+    /**
+     *Tag születési dátuma
+     */
     Date DateOfBirth;
-    //Tag telefonszáma
+    /**
+     *Tag telefonszáma
+     */
     int PhoneNum;
-    //Tag kölcsönzött könyveinek listája
+    /**
+     *Tag kölcsönzött könyveinek listája
+     */
     ArrayList<Integer> BorrowedIds = new ArrayList<>();
 }
