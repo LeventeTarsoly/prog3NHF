@@ -48,4 +48,106 @@ public class AudioData {
      *Van-e hanganyag tárolva hozzá
      */
     Boolean HasAudio;
+
+    /**
+     * konstruktor
+     */
+    public AudioData(){
+        Borrowable = true;
+    }
+
+    /**
+     * getterek
+     */
+    public int getId() {
+        return Id;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getArtist() {
+        return Artist;
+    }
+
+    public int getReleaseYear() {
+        return ReleaseYear;
+    }
+
+    public String getStyle() {
+        return Style;
+    }
+
+    public Enums.Audiotype getType() {
+        return Type;
+    }
+
+    public boolean isBorrowable() {
+        return Borrowable;
+    }
+
+    public int getBorrowerId() {
+        return BorrowerId;
+    }
+
+    public String getBorrowerName() {
+        return BorrowerName;
+    }
+
+    public boolean hasCover() {
+        return HasCover;
+    }
+
+    public boolean hasAudio() {
+        return HasAudio;
+    }
+
+
+    /**
+     * setterek
+     */
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setArtist(String artist) {
+        Artist = artist;
+    }
+
+    public void setReleaseYear(int releaseYear) {
+        ReleaseYear = releaseYear;
+    }
+
+    public void setStyle(String style) {
+        Style = style;
+    }
+
+    public void setType(Enums.Audiotype type) {
+        Type = type;
+    }
+
+    public void setBorrowable(boolean borrowable) {
+        Borrowable = borrowable;
+    }
+
+    public void setBorrowerId(int borrowerId) {
+        BorrowerId = borrowerId;
+    }
+
+    public void setBorrowerName(String borrowerName) {
+        BorrowerName = borrowerName;
+    }
+
+    public void setHasCover(boolean hasCover) {
+        HasCover = hasCover;
+    }
+
+    public void setHasAudio(boolean hasAudio) {
+        HasAudio = hasAudio;
+    }
 }

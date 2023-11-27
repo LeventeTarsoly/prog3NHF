@@ -4,7 +4,7 @@ public class Enums {
     /**
      *Hanganyag tárolási típusai
      */
-    enum Audiotype{
+    public enum Audiotype{
         Vinyl,
         Tape,
         CD
