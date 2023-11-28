@@ -1,5 +1,6 @@
 package Classes;
 
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -17,7 +18,7 @@ public class MemberData {
     /**
      *Tag születési dátuma
      */
-    Date DateOfBirth;
+    LocalDate DateOfBirth;
     /**
      *Tag telefonszáma
      */
@@ -35,7 +36,7 @@ public class MemberData {
         return Name;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return DateOfBirth;
     }
 
@@ -55,7 +56,7 @@ public class MemberData {
         Name = name;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         DateOfBirth = dateOfBirth;
     }
 
@@ -65,5 +66,10 @@ public class MemberData {
 
     public void setBorrowedIds(ArrayList<Integer> borrowedIds) {
         BorrowedIds = borrowedIds;
+    }
+    public MemberData(Integer id,String  name, LocalDate dateOfBirth, Integer phoneNum){
+        Name=name;
+        DateOfBirth=dateOfBirth;
+        PhoneNum=phoneNum;
     }
 }

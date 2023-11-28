@@ -51,12 +51,6 @@ public class MemberPanel extends JPanel{
         }
         this.phone = new JTextField(10);
 
-        // a TextField-ek margóját kicsit megnöveljük, ez segíti a dátum helyes megadását, ugyanis alapértelmezetten
-        // a margók elég keskenyek (0), és a születési dátum megadásakor könnyű nem az első indexre helyezni a kurzort,
-        // az így beírt adatokat viszont a MaskFormatter nem tekinti érvényesnek, mert az csak számokat tartalmazhat, szóközöket nem
-        this.name.setMargin(new Insets(0, 3, 0, 5));
-        this.dateOfBirth.setMargin(new Insets(0, 3, 0, 5));
-        this.phone.setMargin(new Insets(0, 3, 0, 5));
         input.add(name);
         input.add(dateOfBirth);
         input.add(phone);
@@ -116,7 +110,7 @@ public class MemberPanel extends JPanel{
      *
      * @param phone A telefonszám, amire állítani szeretnénk
      */
-    public void setPhone(String phone) {
-        this.phone.setText(phone);
+    public void setPhone(Integer phone) {
+        this.phone.setText(String.valueOf(phone));
     }
 }

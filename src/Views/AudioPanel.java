@@ -46,10 +46,10 @@ public class AudioPanel extends JPanel{
     private final JCheckBox borrowable;
 
     AudioPanel() {
-        this.mainPanel = new JPanel(new BorderLayout(5, 5)); // a JOptionPane fő panele
+        this.mainPanel = new JPanel(new BorderLayout(5, 5));
 
         // Labelek létrehozása és panelhez adása
-        JPanel label = new JPanel(new GridLayout(0, 1, 2, 2)); // a JLabeleket tartalmazó panel
+        JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
         label.add(new JLabel("Cím", SwingConstants.RIGHT));
         label.add(new JLabel("Előadó", SwingConstants.RIGHT));
         label.add(new JLabel("Kiadás éve", SwingConstants.RIGHT));
@@ -67,10 +67,6 @@ public class AudioPanel extends JPanel{
         type = new JComboBox(Enums.Audiotype.values());
         borrowable = new JCheckBox();
 
-        // a TextField-ek margóját kicsit megnöveljük, ez segíti a dátum helyes megadását, ugyanis alapértelmezetten
-        // a margók elég keskenyek (0), és a születési dátum megadásakor könnyű nem az első indexre helyezni a kurzort,
-        // az így beírt adatokat viszont a MaskFormatter nem tekinti érvényesnek, mert az csak számokat tartalmazhat, szóközöket nem
-        this.name.setMargin(new Insets(0, 3, 0, 5));
         this.mainPanel.add(input, BorderLayout.CENTER);
         input.add(name);
         input.add(artist);
@@ -101,4 +97,31 @@ public class AudioPanel extends JPanel{
         this.name.setText(name);
     }
 
+    public String getArtist(){ return artist.getText();}
+    public void setArtist(String artist) {
+        this.artist.setText(artist);
+    }
+    public Integer getReleaseYear(){return Integer.parseInt(releaseyear.getText());}
+
+    public void setReleaseyear(Integer yr){
+        releaseyear.setText(String.valueOf(yr));
+    }
+
+    public String getStyle(){return style.getText();}
+
+    public void setStyle(String style){
+        this.style.setText(style);
+    }
+
+    public Enums.Audiotype getType(){return (Enums.Audiotype) type.getSelectedItem();}
+
+    public void setType(Enums.Audiotype type){
+        this.type.setSelectedItem(type);
+    }
+
+    public Boolean isBorrowable(){return borrowable.isSelected();}
+
+    public void setBorrowable(Boolean isSelected){
+        borrowable.setSelected(isSelected);
+    }
 }

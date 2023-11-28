@@ -150,4 +150,14 @@ public class AudioData {
     public void setHasAudio(boolean hasAudio) {
         HasAudio = hasAudio;
     }
+
+    public AudioData(int id, String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable){
+        Id=id;
+        Name=name;
+        Artist=artist;
+        ReleaseYear=releaseyear;
+        Style=style;
+        Type=type;
+        Borrowable=borrowable;
+    }
 }

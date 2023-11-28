@@ -4,6 +4,7 @@ import Classes.AudioData;
 import Classes.Enums;
 
 import javax.swing.table.AbstractTableModel;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,11 +61,33 @@ public class AudioModel extends AbstractTableModel {
         return true;
     }
 
-    /*public void addStudent(String name, String neptun) {
-		 students.add(new Student(name, neptun, false, 0));
-		 fireTableRowsInserted(0, students.size()-1);
-	 }
-	 */
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case 0 -> audios.get(rowIndex).setName((String) aValue);
+            case 1 -> audios.get(rowIndex).setArtist((String) aValue);
+            case 2 -> audios.get(rowIndex).setReleaseYear((Integer) aValue);
+            case 3 -> audios.get(rowIndex).setStyle((String) aValue);
+            case 4 -> audios.get(rowIndex).setType((Enums.Audiotype) aValue);
+            case 5 -> audios.get(rowIndex).setBorrowable((Boolean) aValue);
+        }
+    }
 
+    public void addAudio(String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable) {
+		 audios.add(new AudioData(audios.size(),name, artist, releaseyear, style, type, borrowable));
+		 fireTableRowsInserted(0, audios.size()-1);
+    }
+
+    public void removeAudio(int idx){
+        audios.remove(idx);
+        fireTableRowsInserted(0, audios.size()-1);
+    }
+    //todo deserialize
+    public void DeSerialize(){
+
+    }
+    //todo serialize
+    public void Serialize(){
+
+    }
 
 }
