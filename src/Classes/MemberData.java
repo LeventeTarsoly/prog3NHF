@@ -8,10 +8,6 @@ import java.util.*;
  */
 public class MemberData {
     /**
-     *Mesterséges ID
-     */
-    int Id;
-    /**
      *Tag neve
      */
     String Name;
@@ -28,9 +24,6 @@ public class MemberData {
      */
     ArrayList<Integer> BorrowedIds = new ArrayList<>();
 
-    public int getId() {
-        return Id;
-    }
 
     public String getName() {
         return Name;
@@ -46,10 +39,6 @@ public class MemberData {
 
     public ArrayList<Integer> getBorrowedIds() {
         return BorrowedIds;
-    }
-
-    public void setId(int id) {
-        Id = id;
     }
 
     public void setName(String name) {
@@ -71,5 +60,18 @@ public class MemberData {
         Name=name;
         DateOfBirth=dateOfBirth;
         PhoneNum=phoneNum;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    public Boolean equals(MemberData other) {
+        if(other != null){
+            if(Objects.equals(other.getName(), getName()) &&other.getPhoneNum()==getPhoneNum()&&getDateOfBirth().equals(other.getDateOfBirth()))
+                return true;
+        }
+        return false;
     }
 }

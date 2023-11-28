@@ -33,13 +33,9 @@ public class AudioData {
      */
     Boolean Borrowable;
     /**
-     *Kölcsönző IDja
-     */
-    int BorrowerId;
-    /**
      *Kölcsönző neve
      */
-    String BorrowerName;
+    MemberData Borrower;
     /**
      *Van-e borítókép
      */
@@ -83,16 +79,13 @@ public class AudioData {
         return Type;
     }
 
-    public boolean isBorrowable() {
+    public boolean getBorrowable() {
         return Borrowable;
     }
 
-    public int getBorrowerId() {
-        return BorrowerId;
-    }
 
-    public String getBorrowerName() {
-        return BorrowerName;
+    public MemberData getBorrower() {
+        return Borrower;
     }
 
     public boolean hasCover() {
@@ -135,12 +128,9 @@ public class AudioData {
         Borrowable = borrowable;
     }
 
-    public void setBorrowerId(int borrowerId) {
-        BorrowerId = borrowerId;
-    }
 
-    public void setBorrowerName(String borrowerName) {
-        BorrowerName = borrowerName;
+    public void setBorrower(MemberData borrower) {
+        Borrower = borrower;
     }
 
     public void setHasCover(boolean hasCover) {

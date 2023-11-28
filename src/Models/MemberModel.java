@@ -1,17 +1,19 @@
 package Models;
 
 import Classes.AudioData;
-import Classes.Enums;
 import Classes.MemberData;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.swing.table.AbstractTableModel;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 public class MemberModel extends AbstractTableModel {
-    public List<MemberData> members = new ArrayList<MemberData>();
+    public static List<MemberData> members = new ArrayList<MemberData>();
     @Override
     public int getRowCount() {
         return members.size();
@@ -28,7 +30,7 @@ public class MemberModel extends AbstractTableModel {
             case 0: return member.getName();
             case 1: return member.getDateOfBirth();
             case 2: return member.getPhoneNum();
-            default: return member.getId();
+            default: return null;
         }
     }
 
@@ -68,16 +70,45 @@ public class MemberModel extends AbstractTableModel {
     }
 
     public void removeMember(int idx) {
+        for (AudioData audio:AudioModel.audios) {
+            if(members.get(idx).equals(audio.getBorrower()))
+                audio.setBorrower(null);
+        }
         members.remove(idx);
         fireTableRowsInserted(0, members.size()-1);
     }
 
-    //todo deserialize
     public void DeSerialize(){
-
+        File file = new File("src/Data/Members.json");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+        Gson gson = gsonBuilder.setLenient().create();
+        String jsonArray;
+        try {
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            jsonArray = br.readLine();
+            br.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        MemberData[] array = gson.fromJson(jsonArray, MemberData[].class);
+        if(array.length!=0)
+            members.addAll(Arrays.asList(array));
     }
-    //todo serialize
     public void Serialize(){
-
+        File file = new File("src/Data/Members.json");
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
+        Gson gson = gsonBuilder.setLenient().create();
+        MemberData[] array = members.toArray(new MemberData[0]);
+        String jsonArray = gson.toJson(array);
+        try {
+            FileWriter writer = new FileWriter(file);
+            writer.write(jsonArray);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
