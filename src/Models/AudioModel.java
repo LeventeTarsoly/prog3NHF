@@ -24,6 +24,10 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     public int getColumnCount() {
         return 7;
     }
+
+    public AudioData getBorrow(int rowidx){
+        return audios.get(rowidx);
+    }
     public Object getValueAt(int rowIndex, int columnIndex) {
         AudioData audio = audios.get(rowIndex);
         if (columnIndex == 6) {
@@ -104,20 +108,22 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     }
     public void DeSerialize(){
         File file = new File("src/Data/Audios.json");
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        Gson gson = gsonBuilder.setLenient().create();
-        String jsonArray;
-        try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            jsonArray = br.readLine();
-            br.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(file.exists()){
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+            Gson gson = gsonBuilder.setLenient().create();
+            String jsonArray;
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                jsonArray = br.readLine();
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            AudioData[] array = gson.fromJson(jsonArray, AudioData[].class);
+            audios.addAll(Arrays.asList(array));
         }
-        AudioData[] array = gson.fromJson(jsonArray, AudioData[].class);
-        audios.addAll(Arrays.asList(array));
     }
     public void Serialize(){
         File file = new File("src/Data/Audios.json");

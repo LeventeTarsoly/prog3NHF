@@ -80,21 +80,23 @@ public class MemberModel extends AbstractTableModel {
 
     public void DeSerialize(){
         File file = new File("src/Data/Members.json");
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
-        Gson gson = gsonBuilder.setLenient().create();
-        String jsonArray;
-        try {
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            jsonArray = br.readLine();
-            br.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(file.exists()){
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateDeserializer());
+            Gson gson = gsonBuilder.setLenient().create();
+            String jsonArray;
+            try {
+                FileReader fr = new FileReader(file);
+                BufferedReader br = new BufferedReader(fr);
+                jsonArray = br.readLine();
+                br.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            MemberData[] array = gson.fromJson(jsonArray, MemberData[].class);
+            if(array.length!=0)
+                members.addAll(Arrays.asList(array));
         }
-        MemberData[] array = gson.fromJson(jsonArray, MemberData[].class);
-        if(array.length!=0)
-            members.addAll(Arrays.asList(array));
     }
     public void Serialize(){
         File file = new File("src/Data/Members.json");
@@ -110,5 +112,9 @@ public class MemberModel extends AbstractTableModel {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void borrow(MemberData member, AudioData audio){
+
     }
 }

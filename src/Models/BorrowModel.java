@@ -11,17 +11,17 @@ public class BorrowModel extends DefaultTreeModel {
     TreeNode root;
     List<MemberData> members;
 
-    public BorrowModel(TreeNode root) {
+    public BorrowModel(TreeNode root, List<MemberData> members) {
         super(root);
         this.root = root;
+        this.members=members;
     }
 
-    public void setMembers(List<MemberData> members){this.members=members;}
     @Override
     public Object getRoot() {
         return root;
     }
-//todo
+
     @Override
     public Object getChild(Object parent, int index) {
         if (parent == root)
@@ -29,7 +29,7 @@ public class BorrowModel extends DefaultTreeModel {
         else {
             for (MemberData member : members) {
                 if (parent == member) {
-                    return member.getBorroweds().get(index);
+                    return member.getBorroweds().get(index).getName();
                 }
             }
         }
@@ -66,6 +66,15 @@ public class BorrowModel extends DefaultTreeModel {
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
+        if (parent == root)
+            members.indexOf((MemberData) child);
+        else {
+            for (MemberData member : members) {
+                if (parent == member) {
+                    return member.getBorroweds().indexOf((AudioData) child);
+                }
+            }
+        }
         return 0;
     }
 

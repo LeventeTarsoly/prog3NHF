@@ -10,10 +10,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
@@ -71,7 +68,7 @@ public class MainFrame extends JFrame {
         lowerPanel = new JPanel();
         lowerPanel.setBorder(BorderFactory.createEmptyBorder(8,8,8,8));
         lowerPanel.setLayout(new BorderLayout());
-        setCombobox();
+        setBorrowerCombobox();
 
         JPanel audioButtonsPanel = new JPanel();
         audioButtonsPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
@@ -93,13 +90,29 @@ public class MainFrame extends JFrame {
         lowerPanel.add(audioButtonsPanel, BorderLayout.NORTH);
         lowerPanel.add(audioScrollPane, BorderLayout.CENTER);
     }
-
-    static void setCombobox(){
+//todo type combobox
+    static void setBorrowerCombobox(){
         JComboBox comboBox = new JComboBox();
         comboBox.setRenderer(new BorrowerCellRenderer());
         for (MemberData member:MemberModel.members) {
             comboBox.addItem(member);
         }
+        comboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                MemberData selectedMember = (MemberData) comboBox.getSelectedItem();
+
+                int selectedRow = audioTable.getSelectedRow();
+                if (selectedRow != -1 && selectedMember!=null) {
+                    selectedMember.addBorrow(audioModel.getBorrow(selectedRow));
+
+                    //memberModel.updateMember(selectedMember);
+                    DefaultTreeModel model = (DefaultTreeModel) borrowTree.getModel();
+                    model.reload();
+                    borrowTree.expandRow(0);
+                }
+            }
+        });
         audioTable.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
     }
 
@@ -148,8 +161,7 @@ public class MainFrame extends JFrame {
                 }
             }
         }
-        BorrowModel borrowModel = new BorrowModel(new DefaultMutableTreeNode("Tagok kölcsönzései:"));
-        borrowModel.setMembers(MemberModel.members);
+        BorrowModel borrowModel = new BorrowModel(new DefaultMutableTreeNode("Tagok kölcsönzései:"), MemberModel.members);
         borrowTree = new JTree(borrowModel);
         borrowTree.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane borrowScrollPane = new JScrollPane(borrowTree);
@@ -215,7 +227,7 @@ public class MainFrame extends JFrame {
                     audioModel.addAudio(name, artist, releaseyear, style, type, borrowable, borrower);
                     model.reload();
                     //MemberNodes.put(node, MemberModel.members.get(MemberModel.members.size()-1));
-                    setCombobox();
+                    setBorrowerCombobox();
                 }
                 catch (Exception E){
                     JOptionPane.showMessageDialog(null, "Rossz formátum", "Hibás formátum", JOptionPane.WARNING_MESSAGE);
@@ -254,14 +266,11 @@ public class MainFrame extends JFrame {
                         String name = memberPanel.getNameValue();
                         LocalDate dateOfBirth = LocalDate.parse(memberPanel.getDateOfBirthValue());
                         Integer phone = Integer.parseInt(memberPanel.getPhoneValue());
-                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(name);
-                        root.add(node);
+                        memberModel.addMember(name, dateOfBirth, phone);
+                        setBorrowerCombobox();
+                        audioModel.fireTableDataChanged();
                         DefaultTreeModel model = (DefaultTreeModel) borrowTree.getModel();
                         model.reload();
-                        memberModel.addMember(name, dateOfBirth, phone);
-                        MemberNodes.put(node, MemberModel.members.get(MemberModel.members.size()-1));
-                        setCombobox();
-                        audioModel.fireTableDataChanged();
                     }
                     catch (Exception E){
                         JOptionPane.showMessageDialog(null, "Rossz formátum", "Hibás formátum", JOptionPane.WARNING_MESSAGE);
@@ -291,7 +300,7 @@ public class MainFrame extends JFrame {
                     model.reload();
                     memberModel.addMember(name, dateOfBirth, phone);
                     MemberNodes.put(node, MemberModel.members.get(MemberModel.members.size()-1));
-                    setCombobox();
+                    setBorrowerCombobox();
                     audioModel.fireTableDataChanged();
                 }
                 catch (Exception E){
@@ -305,7 +314,7 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             memberModel.removeMember(memberTable.getSelectedRow());
-            setCombobox();
+            setBorrowerCombobox();
             audioModel.fireTableDataChanged();
             DefaultTreeModel model = (DefaultTreeModel) borrowTree.getModel();
             model.reload();

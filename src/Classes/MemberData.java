@@ -63,6 +63,9 @@ public class MemberData {
     public void setBorrowedHistory(ArrayList<AudioData> history) {
         BorrowedHistory = history;
     }
+
+    public void addBorrow(AudioData audio){Borroweds.add(audio); BorrowedHistory.add(audio);}
+
     public MemberData(Integer id,String  name, LocalDate dateOfBirth, Integer phoneNum){
         Name=name;
         DateOfBirth=dateOfBirth;
