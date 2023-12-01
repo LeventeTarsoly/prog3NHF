@@ -141,7 +141,7 @@ public class AudioData {
         HasAudio = hasAudio;
     }
 
-    public AudioData(int id, String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable){
+    public AudioData(int id, String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable, MemberData borrower){
         Id=id;
         Name=name;
         Artist=artist;
@@ -149,5 +149,6 @@ public class AudioData {
         Style=style;
         Type=type;
         Borrowable=borrowable;
+        Borrower=borrower;
     }
 }

@@ -88,13 +88,13 @@ public class AudioModel extends AbstractTableModel implements Serializable {
             if(aValue!=null){
                 audios.get(rowIndex).setBorrower((MemberData) aValue);
                 audios.get(rowIndex).setBorrowable(false);
-                fireTableDataChanged();
             }
         }
+        fireTableDataChanged();
     }
 
-    public void addAudio(String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable) {
-		 audios.add(new AudioData(audios.size(),name, artist, releaseyear, style, type, borrowable));
+    public void addAudio(String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable, MemberData borrower) {
+		 audios.add(new AudioData(audios.size(),name, artist, releaseyear, style, type, borrowable, borrower));
 		 fireTableRowsInserted(0, audios.size()-1);
     }
 

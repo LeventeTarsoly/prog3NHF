@@ -3,9 +3,7 @@ package Views;
 import Classes.Enums;
 
 import javax.swing.*;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
-import java.text.ParseException;
 
 /**
  * Egy audioanyag létrehozásához vagy módosításához használható panel
@@ -45,6 +43,11 @@ public class AudioPanel extends JPanel{
      */
     private final JCheckBox borrowable;
 
+    /**
+     *
+     */
+    JPanel input;
+
     AudioPanel() {
         this.mainPanel = new JPanel(new BorderLayout(5, 5));
 
@@ -59,7 +62,7 @@ public class AudioPanel extends JPanel{
         this.mainPanel.add(label, BorderLayout.WEST);
 
         // a felhasználó által szerkeszthető komponensek létrehozása és panelhez adása
-        JPanel input = new JPanel(new GridLayout(0, 1, 2, 2));
+        input = new JPanel(new GridLayout(0, 1, 2, 2));
         this.name = new JTextField(10);
         artist = new JTextField(10);
         releaseyear = new JTextField(4);
@@ -123,5 +126,9 @@ public class AudioPanel extends JPanel{
 
     public void setBorrowable(Boolean isSelected){
         borrowable.setSelected(isSelected);
+    }
+
+    public void removeBorrowable(){
+        input.remove(borrowable);
     }
 }
