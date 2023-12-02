@@ -11,9 +11,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MemberModel extends AbstractTableModel {
     public static List<MemberData> members = new ArrayList<MemberData>();
+
+    public static List<MemberData> getMembers(){return members;}
     @Override
     public int getRowCount() {
         return members.size();
@@ -22,6 +25,9 @@ public class MemberModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return 3;
+    }
+    public MemberData getMemberAt(int rowidx){
+        return members.get(rowidx);
     }
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -62,6 +68,7 @@ public class MemberModel extends AbstractTableModel {
             case 1 -> members.get(rowIndex).setDateOfBirth((LocalDate) aValue);
             case 2 -> members.get(rowIndex).setPhoneNum((Integer) aValue);
         }
+        fireTableDataChanged();
     }
 
     public void addMember(String name, LocalDate dateOfBirth, Integer phoneNum) {
@@ -76,6 +83,23 @@ public class MemberModel extends AbstractTableModel {
         }
         members.remove(idx);
         fireTableRowsInserted(0, members.size()-1);
+    }
+
+    public void modifyMember(int idx, String name, LocalDate dateOfBirth, Integer phoneNum){
+        MemberData member = members.get(idx);
+        if(!Objects.equals(member.getName(), name))
+            member.setName(name);
+        if(!Objects.equals(member.getDateOfBirth(), dateOfBirth))
+            member.setDateOfBirth(dateOfBirth);
+        if(!Objects.equals(member.getPhoneNum(), phoneNum))
+            member.setPhoneNum(phoneNum);
+    }
+
+    public void removeBorrow(int borrow){
+        for (MemberData member:members){
+            if(member.getBorroweds().contains(borrow))
+                member.removeBorrowed(borrow);
+        }
     }
 
     public void DeSerialize(){

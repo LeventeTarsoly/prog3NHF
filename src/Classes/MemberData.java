@@ -22,8 +22,8 @@ public class MemberData {
     /**
      *Tag kölcsönzött könyveinek listája
      */
-    ArrayList<AudioData> Borroweds = new ArrayList<>();
-    ArrayList<AudioData> BorrowedHistory = new ArrayList<>();
+    ArrayList<Integer> Borroweds = new ArrayList<>();
+    ArrayList<Integer> BorrowedHistory = new ArrayList<>();
 
 
     public String getName() {
@@ -38,10 +38,10 @@ public class MemberData {
         return PhoneNum;
     }
 
-    public ArrayList<AudioData> getBorroweds() {
+    public ArrayList<Integer> getBorroweds() {
         return Borroweds;
     }
-    public ArrayList<AudioData> getBorrowedHistory() {
+    public ArrayList<Integer> getBorrowedHistory() {
         return BorrowedHistory;
     }
 
@@ -57,14 +57,17 @@ public class MemberData {
         PhoneNum = phoneNum;
     }
 
-    public void setBorroweds(ArrayList<AudioData> borroweds) {
+    public void setBorroweds(ArrayList<Integer> borroweds) {
         Borroweds = borroweds;
     }
-    public void setBorrowedHistory(ArrayList<AudioData> history) {
+    public void removeBorrowed(int borrowed) {
+        this.Borroweds.remove((Object) borrowed);
+    }
+    public void setBorrowedHistory(ArrayList<Integer> history) {
         BorrowedHistory = history;
     }
 
-    public void addBorrow(AudioData audio){Borroweds.add(audio); BorrowedHistory.add(audio);}
+    public void addBorrow(int id){Borroweds.add(id); BorrowedHistory.add(id);}
 
     public MemberData(Integer id,String  name, LocalDate dateOfBirth, Integer phoneNum){
         Name=name;

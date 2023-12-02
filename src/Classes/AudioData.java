@@ -151,4 +151,14 @@ public class AudioData {
         Borrowable=borrowable;
         Borrower=borrower;
     }
+    public AudioData(String name, String artist, Integer releaseyear, String style, Enums.Audiotype type){
+        Id=0;
+        Name=name;
+        Artist=artist;
+        ReleaseYear=releaseyear;
+        Style=style;
+        Type=type;
+        Borrowable=false;
+        Borrower=null;
+    }
 }

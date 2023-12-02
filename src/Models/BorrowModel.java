@@ -8,17 +8,18 @@ import javax.swing.tree.*;
 import java.util.List;
 
 public class BorrowModel extends DefaultTreeModel {
-    TreeNode root;
+    DefaultMutableTreeNode root;
     List<MemberData> members;
+    List<AudioData> audios;
 
-    public BorrowModel(TreeNode root, List<MemberData> members) {
+    public BorrowModel(DefaultMutableTreeNode root, List<MemberData> members, List<AudioData> audios) {
         super(root);
         this.root = root;
         this.members=members;
+        this.audios = audios;
     }
 
-    @Override
-    public Object getRoot() {
+    public DefaultMutableTreeNode getRoot() {
         return root;
     }
 
@@ -29,7 +30,10 @@ public class BorrowModel extends DefaultTreeModel {
         else {
             for (MemberData member : members) {
                 if (parent == member) {
-                    return member.getBorroweds().get(index).getName();
+                    for (AudioData audio:audios) {
+                        if(audio.getId()==member.getBorroweds().get(index))
+                            return audio.getName();
+                    }
                 }
             }
         }
@@ -60,31 +64,19 @@ public class BorrowModel extends DefaultTreeModel {
     }
 
     @Override
-    public void valueForPathChanged(TreePath path, Object newValue) {
-
-    }
-
-    @Override
     public int getIndexOfChild(Object parent, Object child) {
         if (parent == root)
             members.indexOf((MemberData) child);
         else {
             for (MemberData member : members) {
                 if (parent == member) {
-                    return member.getBorroweds().indexOf((AudioData) child);
+                    for (AudioData audio: audios) {
+                        if(audio.equals(child))
+                            return member.getBorroweds().indexOf(audio.getId());
+                    }
                 }
             }
         }
         return 0;
-    }
-
-    @Override
-    public void addTreeModelListener(TreeModelListener l) {
-
-    }
-
-    @Override
-    public void removeTreeModelListener(TreeModelListener l) {
-
     }
 }

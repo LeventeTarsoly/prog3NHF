@@ -12,9 +12,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class AudioModel extends AbstractTableModel implements Serializable {
     public static List<AudioData> audios = new ArrayList<>();
+
+    public AudioModel(ArrayList<AudioData> data){
+        audios = data;
+    }
+    int idcnt = 0;
     @Override
     public int getRowCount() {
         return audios.size();
@@ -25,7 +31,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         return 7;
     }
 
-    public AudioData getBorrow(int rowidx){
+    public AudioData getAudioAt(int rowidx){
         return audios.get(rowidx);
     }
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -98,13 +104,29 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     }
 
     public void addAudio(String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable, MemberData borrower) {
-		 audios.add(new AudioData(audios.size(),name, artist, releaseyear, style, type, borrowable, borrower));
+		 audios.add(new AudioData(idcnt++,name, artist, releaseyear, style, type, borrowable, borrower));
 		 fireTableRowsInserted(0, audios.size()-1);
     }
 
     public void removeAudio(int idx){
         audios.remove(idx);
         fireTableRowsInserted(0, audios.size()-1);
+    }
+
+    public void modifyAudio(int idx, String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable){
+        AudioData audio = audios.get(idx);
+        if(!Objects.equals(audio.getName(), name))
+            audio.setName(name);
+        if(!Objects.equals(audio.getArtist(), artist))
+            audio.setArtist(artist);
+        if(!Objects.equals(audio.getReleaseYear(), releaseyear))
+            audio.setReleaseYear(releaseyear);
+        if(!Objects.equals(audio.getStyle(), style))
+            audio.setStyle(style);
+        if(!Objects.equals(audio.getType(), type))
+            audio.setType(type);
+        if(!Objects.equals(audio.getBorrowable(), borrowable))
+            audio.setBorrowable(borrowable);
     }
     public void DeSerialize(){
         File file = new File("src/Data/Audios.json");
@@ -139,5 +161,6 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        idcnt = audios.getLast().getId();
     }
 }

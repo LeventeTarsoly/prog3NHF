@@ -63,7 +63,7 @@ public class AudioPanel extends JPanel{
 
         // a felhasználó által szerkeszthető komponensek létrehozása és panelhez adása
         input = new JPanel(new GridLayout(0, 1, 2, 2));
-        this.name = new JTextField(10);
+        name = new JTextField(10);
         artist = new JTextField(10);
         releaseyear = new JTextField(4);
         style = new JTextField(10);
@@ -128,7 +128,7 @@ public class AudioPanel extends JPanel{
         borrowable.setSelected(isSelected);
     }
 
-    public void removeBorrowable(){
+    public void removeBorrowableCheckbox(){
         input.remove(borrowable);
     }
 }
