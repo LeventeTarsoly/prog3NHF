@@ -185,6 +185,11 @@ public class MainFrame extends JFrame {
         audioTable.getColumnModel().getColumn(6).setCellEditor(new DefaultCellEditor(comboBox));
     }
 
+    void setTypeCombobox(){
+        JComboBox comboBox = new JComboBox(Enums.Audiotype.values());
+        audioTable.getColumnModel().getColumn(4).setCellEditor(new DefaultCellEditor(comboBox));
+    }
+
     void setStyleCombobox(){
         ArrayList<String> data = new ArrayList<>();
         data.add("");
