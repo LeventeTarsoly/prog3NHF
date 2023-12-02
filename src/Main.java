@@ -1,9 +1,9 @@
-import Views.MainFrame;
+import Views.LoginFrame;
 
 public class Main {
     public static void main(String[] args) {
-        MainFrame frame = new MainFrame();
-        frame.setVisible(true);
+        LoginFrame loginFrame = new LoginFrame();
+        loginFrame.setVisible(true);
         //todo brain functions, comments, tests, uml, documentaries
     }
 }
