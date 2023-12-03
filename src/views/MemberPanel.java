@@ -122,7 +122,7 @@ public class MemberPanel extends JPanel{
      *
      * @param phone A telefonszám, amire állítani szeretnénk
      */
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone.setText(String.valueOf(phone));
     }
 }

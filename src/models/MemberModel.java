@@ -71,7 +71,6 @@ public class MemberModel extends AbstractTableModel {
     public Class<?> getColumnClass(int column){
         return switch (column) {
             case 1 -> LocalDate.class;
-            case 2 -> Integer.class;
             default -> String.class;
         };
     }
@@ -84,7 +83,7 @@ public class MemberModel extends AbstractTableModel {
         switch (columnIndex) {
             case 0 -> members.get(rowIndex).setName((String) aValue);
             case 1 -> members.get(rowIndex).setDateOfBirth((LocalDate) aValue);
-            case 2 -> members.get(rowIndex).setPhoneNum((Integer) aValue);
+            case 2 -> members.get(rowIndex).setPhoneNum((String) aValue);
         }
         fireTableDataChanged();
     }
@@ -97,7 +96,7 @@ public class MemberModel extends AbstractTableModel {
      * @param dateOfBirth új tag születési dátuma
      * @param phoneNum    új telefonszáma
      */
-    public void addMember(String name, LocalDate dateOfBirth, Integer phoneNum) {
+    public void addMember(String name, LocalDate dateOfBirth, String phoneNum) {
         members.add(new MemberData(name, dateOfBirth, phoneNum));
 		 fireTableRowsInserted(0, members.size()-1);
     }
@@ -126,7 +125,7 @@ public class MemberModel extends AbstractTableModel {
      * @param dateOfBirth új tag születési dátuma
      * @param phoneNum    új telefonszáma
      */
-    public void modifyMember(int idx, String name, LocalDate dateOfBirth, Integer phoneNum){
+    public void modifyMember(int idx, String name, LocalDate dateOfBirth, String phoneNum) {
         MemberData member = members.get(idx);
         if(!Objects.equals(member.getName(), name))
             member.setName(name);

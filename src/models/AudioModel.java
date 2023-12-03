@@ -217,6 +217,9 @@ public class AudioModel extends AbstractTableModel implements Serializable {
             if (array.length != 0)
                 audios.addAll(Arrays.asList(array));
         }
+        //ID generálásához használt segédváltozó beállítása az eddigi maximális ID értékre+1
+        if (!audios.isEmpty())
+            idcnt = audios.getLast().getId() + 1;
     }
 
     /**
@@ -239,7 +242,5 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        //ID generálásához használt segédváltozó beállítása az eddigi maximális ID értékre+1
-        idcnt = audios.getLast().getId()+1;
     }
 }

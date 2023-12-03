@@ -1,15 +1,9 @@
 [
   {
-    "Name": "Hermann Máté",
+    "Name": "asd",
     "DateOfBirth": "11-11-1111",
-    "PhoneNum": 2,
-    "Borroweds": [
-      0
-    ],
-    "BorrowedHistory": [
-      0,
-      0,
-      0
-    ]
+    "PhoneNum": "3213214124526",
+    "Borroweds": [],
+    "BorrowedHistory": []
   }
 ]

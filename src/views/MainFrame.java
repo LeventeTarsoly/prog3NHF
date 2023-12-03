@@ -19,7 +19,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-//todo refresh borrowtree, audiotable when membertable modified
 
 /**
  * A fő Frame
@@ -510,7 +509,7 @@ public class MainFrame extends JFrame {
                         //lekéri a bevitt adatokat
                         String name = memberPanel.getNameValue();
                         LocalDate dateOfBirth = LocalDate.parse(memberPanel.getDateOfBirthValue());
-                        Integer phone = Integer.parseInt(memberPanel.getPhoneValue());
+                        String phone = memberPanel.getPhoneValue();
 
                         //létrehozza az új tagot
                         memberModel.addMember(name, dateOfBirth, phone);
@@ -549,7 +548,7 @@ public class MainFrame extends JFrame {
                     //lekéri a bevitt adatokat
                     String name = memberPanel.getNameValue();
                     LocalDate dateOfBirth = LocalDate.parse(memberPanel.getDateOfBirthValue());
-                    Integer phone = Integer.parseInt(memberPanel.getPhoneValue());
+                    String phone = memberPanel.getPhoneValue();
 
                     //módosítja a kiválasztott tagot
                     memberModel.modifyMember(memberTable.getSelectedRow(), name, dateOfBirth, phone);

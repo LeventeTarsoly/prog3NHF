@@ -12,6 +12,6 @@ public class Main {
     public static void main(String[] args) {
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
-        //todo tests, uml, documentaries
+        //todo tests, documentaries
     }
 }

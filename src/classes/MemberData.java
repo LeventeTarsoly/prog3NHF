@@ -18,7 +18,7 @@ public class MemberData {
     /**
      * Tag telefonszáma
      */
-    int PhoneNum;
+    String PhoneNum;
     /**
      * Tag kölcsönzött könyveinek listája
      */
@@ -52,7 +52,7 @@ public class MemberData {
      *
      * @return telefonszám
      */
-    public int getPhoneNum() {
+    public String getPhoneNum() {
         return PhoneNum;
     }
 
@@ -88,7 +88,7 @@ public class MemberData {
      *
      * @param phoneNum az új telefonszám
      */
-    public void setPhoneNum(int phoneNum) {
+    public void setPhoneNum(String phoneNum) {
         PhoneNum = phoneNum;
     }
 
@@ -118,7 +118,7 @@ public class MemberData {
      * @param dateOfBirth a születési dátum
      * @param phoneNum    a telefonszám
      */
-    public MemberData(String  name, LocalDate dateOfBirth, Integer phoneNum){
+    public MemberData(String name, LocalDate dateOfBirth, String phoneNum) {
         Name=name;
         DateOfBirth=dateOfBirth;
         PhoneNum=phoneNum;
@@ -137,7 +137,7 @@ public class MemberData {
      */
     public Boolean equals(MemberData other) {
         if(other != null){
-            return Objects.equals(other.getName(), getName()) && other.getPhoneNum() == getPhoneNum() && getDateOfBirth().equals(other.getDateOfBirth());
+            return Objects.equals(other.getName(), getName()) && Objects.equals(other.getPhoneNum(), getPhoneNum()) && getDateOfBirth().equals(other.getDateOfBirth());
         }
         return false;
     }
