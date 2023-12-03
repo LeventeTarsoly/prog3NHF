@@ -1,0 +1,295 @@
+@startuml
+class views.BorrowFrame {
+- JTable rentalHistoryTable
+~ JPanel borrowMenuPanel
+- void initRentalHistoryTable(MemberData)
+- List<AudioData> getRentalHistory(MemberData)
+}
+class views.AudioPanel {
+- JPanel mainPanel
+- JTextField name
+- JTextField artist
+- JTextField releaseyear
+- JTextField style
+- JComboBox type
+- JCheckBox borrowable
+~ JPanel input
++ JPanel getMainPanel()
++ String getNameValue()
++ void setNameValue(String)
++ String getArtist()
++ void setArtist(String)
++ Integer getReleaseYear()
++ void setReleaseyear(Integer)
++ String getStyle()
++ void setStyle(String)
++ Enums.Audiotype getType()
++ void setType(Enums.Audiotype)
++ Boolean isBorrowable()
++ void setBorrowable(Boolean)
++ void removeBorrowableCheckbox()
+}
+class views.AudioPanel$addButtonActionListener {
+~ String Extension
+~ JPanel ParentPanel
++ void actionPerformed(ActionEvent)
+}
+class views.MemberPanel {
+- JPanel mainPanel
+- JTextField name
+- JFormattedTextField dateOfBirth
+- JTextField phone
++ JPanel getMainPanel()
++ String getNameValue()
++ void setNameValue(String)
++ String getDateOfBirthValue()
++ void setDateOfBirth(String)
++ String getPhoneValue()
++ void setPhone(Integer)
+}
+class classes.AudioData {
+~ int Id
+~ String Name
+~ String Artist
+~ int ReleaseYear
+~ String Style
+~ Enums.Audiotype Type
+~ Boolean Borrowable
+~ MemberData Borrower
++ int getId()
++ String getName()
++ String getArtist()
++ int getReleaseYear()
++ String getStyle()
++ Enums.Audiotype getType()
++ boolean getBorrowable()
++ MemberData getBorrower()
++ void setName(String)
++ void setArtist(String)
++ void setReleaseYear(int)
++ void setStyle(String)
++ void setType(Enums.Audiotype)
++ void setBorrowable(boolean)
++ void setBorrower(MemberData)
+}
+class views.PlayerFrame {
+~ BufferedImage resizeImage(BufferedImage,int,int)
+~ BufferedImage getImage(String,int,int)
+}
+class views.PlayerFrame$AudioPlayer {
+~ Clip clip
+~ boolean isPlaying
+~ AudioInputStream audioInputStream
++ void play()
++ void pause()
++ void jump(long)
++ Long getTime()
++ void stop()
+}
+class models.MemberModel {
++ {static} List<MemberData> members
++ {static} List<MemberData> getMembers()
++ int getRowCount()
++ int getColumnCount()
++ MemberData getMemberAt(int)
++ Object getValueAt(int,int)
++ String getColumnName(int)
++ Class<?> getColumnClass(int)
++ boolean isCellEditable(int,int)
++ void setValueAt(Object,int,int)
++ void addMember(String,LocalDate,Integer)
++ void removeMember(int)
++ void modifyMember(int,String,LocalDate,Integer)
++ void removeBorrow(int)
++ void DeSerialize()
++ void Serialize()
+}
+class classes.Enums {
+}
+enum classes.Audiotype {
++  Hanglemez
++  Kazetta
++  CD
+}
+class models.BorrowModel {
+~ DefaultMutableTreeNode root
+~ List<MemberData> members
+~ List<AudioData> audios
++ DefaultMutableTreeNode getRoot()
++ Object getChild(Object,int)
++ int getChildCount(Object)
++ boolean isLeaf(Object)
++ int getIndexOfChild(Object,Object)
+}
+class views.MainFrame {
+~ JTable audioTable
+~ JTable memberTable
+~ JTree borrowTree
+~ JPanel leftPanel
+~ JPanel lowerPanel
+~ JSplitPane horizontalSplitPane
+~ JSplitPane verticalSplitPane
+~ AudioModel audioModel
+~ MemberModel memberModel
+~ DefaultMutableTreeNode root
+~ JComboBox StyleFilter
+~ void initlowerPanel()
++ {static} JTextField addTableStringSorter(JTable,TableModel,JButton,int,int)
+~ void setBorrowerCombobox()
+~ void setTypeCombobox()
+~ void setStyleCombobox()
+~ void initleftPanel()
+~ void initborrowTree()
+~ void memberDataChanged(MemberData)
+}
+class views.MainFrame$AudioAddButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$AudioModifyButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$AudioDeleteButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$AudioReturnButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$MemberAddButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$MemberModifyButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$MemberDeleteButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.MainFrame$AudioTablePropertyChangedListener {
++ void propertyChange(PropertyChangeEvent)
+}
+class views.MainFrame$MemberTablePropertyChangedListener {
++ void propertyChange(PropertyChangeEvent)
+}
+class views.MainFrame$BorrowerCellRenderer {
++ Component getListCellRendererComponent(JList<?>,Object,int,boolean,boolean)
+}
+class views.MainFrame$StringRowFilter {
+~ String Filter
+~ int Column
++ boolean include(Entry)
+}
+class views.MainFrame$BoolRowFilter {
+~ Boolean Filter
+~ int Column
++ boolean include(Entry)
+}
+class views.MainFrame$AudioTypeRowFilter {
+~ Enums.Audiotype Filter
+~ int Column
++ boolean include(Entry)
+}
+class views.LoginFrame {
+~ {static} JCheckBox showPassword
+~ {static} JPasswordField pwField
+~ {static} JTextField usernameField
+~ {static} JLabel msgLabel
+}
+class views.LoginFrame$LoginButtonActionListener {
++ void actionPerformed(ActionEvent)
+}
+class views.LoginFrame$ShowPasswordActionListener {
++ void actionPerformed(ActionEvent)
+}
+class models.LocalDateSerializer {
+- {static} DateTimeFormatter formatter
++ JsonElement serialize(LocalDate,Type,JsonSerializationContext)
+}
+class models.LocalDateDeserializer {
++ LocalDate deserialize(JsonElement,Type,JsonDeserializationContext)
+}
+class Main {
++ {static} void main(String[])
+}
+class models.AudioModel {
++ {static} List<AudioData> audios
+~ int idcnt
++ int getRowCount()
++ int getColumnCount()
++ AudioData getAudioAt(int)
++ AudioData getLastAudio()
++ Object getValueAt(int,int)
++ String getColumnName(int)
++ Class<?> getColumnClass(int)
++ boolean isCellEditable(int,int)
++ void setValueAt(Object,int,int)
++ void addAudio(String,String,Integer,String,Enums.Audiotype,Boolean,MemberData)
++ void removeAudio(int)
++ void modifyAudio(int,String,String,Integer,String,Enums.Audiotype,Boolean)
++ void DeSerialize()
++ void Serialize()
+}
+class classes.MemberData {
+~ String Name
+~ LocalDate DateOfBirth
+~ int PhoneNum
+~ ArrayList<Integer> Borroweds
+~ ArrayList<Integer> BorrowedHistory
++ String getName()
++ LocalDate getDateOfBirth()
++ int getPhoneNum()
++ ArrayList<Integer> getBorroweds()
++ void setName(String)
++ void setDateOfBirth(LocalDate)
++ void setPhoneNum(int)
++ void addBorrow(int)
++ void removeBorrowed(int)
++ String toString()
++ Boolean equals(MemberData)
+}
+
+
+views.JFrame <|-- views.BorrowFrame
+views.JPanel <|-- views.AudioPanel
+views.AudioPanel +.. views.AudioPanel$addButtonActionListener
+views.ActionListener <|.. views.AudioPanel$addButtonActionListener
+views.JPanel <|-- views.MemberPanel
+views.JFrame <|-- views.PlayerFrame
+views.PlayerFrame +.. views.PlayerFrame$AudioPlayer
+javax.swing.table.AbstractTableModel <|-- models.MemberModel
+models.DefaultTreeModel <|-- models.BorrowModel
+views.JFrame <|-- views.MainFrame
+views.MainFrame +.. views.MainFrame$AudioAddButtonActionListener
+views.ActionListener <|.. views.MainFrame$AudioAddButtonActionListener
+views.MainFrame +.. views.MainFrame$AudioModifyButtonActionListener
+views.ActionListener <|.. views.MainFrame$AudioModifyButtonActionListener
+views.MainFrame +.. views.MainFrame$AudioDeleteButtonActionListener
+views.ActionListener <|.. views.MainFrame$AudioDeleteButtonActionListener
+views.MainFrame +.. views.MainFrame$AudioReturnButtonActionListener
+views.ActionListener <|.. views.MainFrame$AudioReturnButtonActionListener
+views.MainFrame +.. views.MainFrame$MemberAddButtonActionListener
+views.ActionListener <|.. views.MainFrame$MemberAddButtonActionListener
+views.MainFrame +.. views.MainFrame$MemberModifyButtonActionListener
+views.ActionListener <|.. views.MainFrame$MemberModifyButtonActionListener
+views.MainFrame +.. views.MainFrame$MemberDeleteButtonActionListener
+views.ActionListener <|.. views.MainFrame$MemberDeleteButtonActionListener
+views.MainFrame +.. views.MainFrame$AudioTablePropertyChangedListener
+views.PropertyChangeListener <|.. views.MainFrame$AudioTablePropertyChangedListener
+views.MainFrame +.. views.MainFrame$MemberTablePropertyChangedListener
+views.PropertyChangeListener <|.. views.MainFrame$MemberTablePropertyChangedListener
+views.MainFrame +.. views.MainFrame$BorrowerCellRenderer
+views.DefaultListCellRenderer <|-- views.MainFrame$BorrowerCellRenderer
+views.MainFrame +.. views.MainFrame$StringRowFilter
+views.RowFilter <|-- views.MainFrame$StringRowFilter
+views.MainFrame +.. views.MainFrame$BoolRowFilter
+views.RowFilter <|-- views.MainFrame$BoolRowFilter
+views.MainFrame +.. views.MainFrame$AudioTypeRowFilter
+views.RowFilter <|-- views.MainFrame$AudioTypeRowFilter
+views.JFrame <|-- views.LoginFrame
+views.LoginFrame +.. views.LoginFrame$LoginButtonActionListener
+views.ActionListener <|.. views.LoginFrame$LoginButtonActionListener
+views.LoginFrame +.. views.LoginFrame$ShowPasswordActionListener
+views.ActionListener <|.. views.LoginFrame$ShowPasswordActionListener
+models.JsonSerializer <|.. models.LocalDateSerializer
+com.google.gson.JsonDeserializer <|.. models.LocalDateDeserializer
+models.Serializable <|.. models.AudioModel
+javax.swing.table.AbstractTableModel <|-- models.AudioModel
+@enduml
