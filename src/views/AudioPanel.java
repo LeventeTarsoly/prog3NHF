@@ -97,7 +97,7 @@ public class AudioPanel extends JPanel{
     }
 
     /**
-     * Tallózéáshoz használt gomb ActionListenerje
+     * Tallózáshoz használt gomb ActionListenerje
      */
     static class addButtonActionListener implements ActionListener {
         /**

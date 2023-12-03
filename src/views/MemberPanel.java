@@ -30,22 +30,23 @@ public class MemberPanel extends JPanel{
     private final JTextField phone;
 
     /**
-     * Instantiates a new Member panel.
+     * MemberPanel létrehozása
      */
     MemberPanel() {
-        this.mainPanel = new JPanel(new BorderLayout(5, 5)); // a JOptionPane fő panele
+        this.mainPanel = new JPanel(new BorderLayout(5, 5));
 
         // Labelek létrehozása és panelhez adása
-        JPanel label = new JPanel(new GridLayout(0, 1, 2, 2)); // a JLabeleket tartalmazó panel
+        JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
         label.add(new JLabel("Név", SwingConstants.RIGHT));
         label.add(new JLabel("Születési idő", SwingConstants.RIGHT));
         label.add(new JLabel("Telefonszám", SwingConstants.RIGHT));
         this.mainPanel.add(label, BorderLayout.WEST);
 
-        // a felhasználó által szerkeszthető komponensek létrehozása és panelhez adása
+        // szerkeszthető komponensek létrehozása és panelhez adása
         JPanel input = new JPanel(new GridLayout(0, 1, 2, 2));
         this.name = new JTextField(10);
         this.dateOfBirth = new JFormattedTextField();
+        //dátumhoz tartozó formátumellenőrzés
         try {
             MaskFormatter dateMask = new MaskFormatter("####-##-##");
             dateMask.install(dateOfBirth);
@@ -54,16 +55,18 @@ public class MemberPanel extends JPanel{
         }
         this.phone = new JTextField(10);
 
+        //szerkeszthető komponensek inputhoz adása
         input.add(name);
         input.add(dateOfBirth);
         input.add(phone);
+
         this.mainPanel.add(input, BorderLayout.CENTER);
     }
 
     /**
-     * Gets main panel.
+     * Visszaadja a fő panelt
      *
-     * @return the main panel
+     * @return a main panel
      */
     public JPanel getMainPanel() {
         return mainPanel;
@@ -72,7 +75,7 @@ public class MemberPanel extends JPanel{
     /**
      * Visszaadja a név szövegmezőben megadott értéket.
      *
-     * @return A név megadására szolgáló TextField tartalma
+     * @return A cím megadására szolgáló TextField tartalma
      */
     public String getNameValue() {
         return name.getText();

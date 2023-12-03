@@ -585,26 +585,29 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type Member delete button action listener.
+     * Tag törlésének gombjához tartozó Listener
      */
     class MemberDeleteButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             memberModel.removeMember(memberTable.getSelectedRow());
+            //frissíti a kölcsönzők comboboxát a hanganyagok táblájában
             setBorrowerCombobox();
             audioModel.fireTableDataChanged();
+            //frissíti ad fát
             BorrowModel model = (BorrowModel) borrowTree.getModel();
             model.reload();
         }
     }
 
     /**
-     * The type Audio table property changed listener.
+     * A hanganyagok tábblájának módosulásához tartozó listener
      */
     class AudioTablePropertyChangedListener implements PropertyChangeListener{
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if(borrowTree!=null){
+                //frissíti a fát
                 BorrowModel model = (BorrowModel) borrowTree.getModel();
                 model.reload();
             }
@@ -612,14 +615,16 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type Member table property changed listener.
+     * A hanganyagok tábblájának módosulásához tartozó listener
      */
     class MemberTablePropertyChangedListener implements PropertyChangeListener{
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if(memberTable.getSelectedRow()!=-1){
+                //frissíti a fát
                 BorrowModel model = (BorrowModel) borrowTree.getModel();
                 model.reload();
+                //frissíti a hanganyok tábláját
                 MemberData selectedMember = MemberModel.getMembers().get(memberTable.getSelectedRow());
                 memberDataChanged(selectedMember);
                 setBorrowerCombobox();
@@ -629,7 +634,7 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type Borrower cell renderer.
+     * A kölcsönzők kivaálasztásához használt comboboxhoz tartozó renderer
      */
     static class BorrowerCellRenderer extends DefaultListCellRenderer {
         @Override
@@ -643,24 +648,24 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type String row filter.
+     * String típusú oszlopok szűréséhez használt RowFilter
      */
     static class StringRowFilter extends RowFilter{
 
         /**
-         * The Filter.
+         * a filter
          */
         final String Filter;
         /**
-         * The Column.
+         * az oszlop sorszáma
          */
         final int Column;
 
         /**
-         * Instantiates a new String row filter.
+         * konstuktoe
          *
-         * @param filter the filter
-         * @param column the column
+         * @param filter a filter
+         * @param column a kiválaszott oszlop
          */
         StringRowFilter(String filter, int column){
             Filter = filter;
@@ -673,23 +678,24 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type Bool row filter.
+     * Bool típusú oszlopok szűréséhez használt RowFilter
      */
     static class BoolRowFilter extends RowFilter{
 
         /**
-         * The Filter.
+         * a filter
          */
         final Boolean Filter;
         /**
-         * The Column.
+         * az oszlop sorszáma
          */
         final int Column;
 
         /**
-         * Instantiates a new Bool row filter.
+         * konstruktor
+         * csak a kölcsönzések oszlopához használt
          *
-         * @param filter the filter
+         * @param filter a filter
          */
         BoolRowFilter(Boolean filter) {
             Filter = filter;
@@ -702,23 +708,24 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * The type Audio type row filter.
+     * A hanganyak típusának szűréséhez használt RowFilter
      */
     static class AudioTypeRowFilter extends RowFilter{
 
         /**
-         * The Filter.
+         * A Filter.
          */
         final Enums.Audiotype Filter;
         /**
-         * The Column.
+         * az oszlop sorszáma
          */
         final int Column;
 
         /**
-         * Instantiates a new Audio type row filter.
+         * konstruktor
+         * csak a típus oszlophoz használt
          *
-         * @param filter the filter
+         * @param filter a filter
          */
         AudioTypeRowFilter(Enums.Audiotype filter) {
             Filter = filter;

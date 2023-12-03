@@ -1,10 +1,10 @@
 package views;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -13,15 +13,15 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * The type Player frame.
+ * A lejátszó Frameje
  */
 public class PlayerFrame extends JFrame {
 
     /**
-     * Instantiates a new Player frame.
+     * Lejátszó inicializálása
      *
-     * @param id   the id
-     * @param name the name
+     * @param id   hanganyag idja
+     * @param name hanganyag neve
      */
     public PlayerFrame(String id, String name) {
         super(name);
@@ -29,21 +29,22 @@ public class PlayerFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
         setSize(400, 500);
+        //megnyitja a képet
         BufferedImage myPicture = getImage(id + ".png", 400, 400);
         JLabel picLabel = new JLabel(new ImageIcon(myPicture));
         add(picLabel, BorderLayout.NORTH);
+        //lejátszó komponenseket tartalmazó panele
         JPanel playerPanel = new JPanel(new BorderLayout());
         playerPanel.setSize(400, 100);
+        //play/pause gomb
         JButton playerButton = new JButton();
         BufferedImage buttonImage = getImage("ButtonIcon.png", 61, 61);
-
         playerButton.setSize(61, 61);
         playerButton.setIcon(new ImageIcon(buttonImage));
         playerButton.setBorder(BorderFactory.createEmptyBorder());
-
+        //lejátszásbeli időt kijelző Label
         JLabel currentTime = new JLabel("00:00");
 
-        playerPanel.add(playerButton, BorderLayout.WEST);
         JPanel sliderPanel = new JPanel();
         sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.X_AXIS));
         sliderPanel.add(currentTime);
@@ -72,6 +73,8 @@ public class PlayerFrame extends JFrame {
 
         JLabel endTime = new JLabel(String.valueOf(player.getTime() / 1000000));
         sliderPanel.add(endTime);
+
+        playerPanel.add(playerButton, BorderLayout.WEST);
         playerPanel.add(sliderPanel);
         add(playerPanel, BorderLayout.SOUTH);
         this.addWindowListener(new WindowAdapter() {
