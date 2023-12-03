@@ -42,41 +42,45 @@ public class PlayerFrame extends JFrame {
         playerButton.setSize(61, 61);
         playerButton.setIcon(new ImageIcon(buttonImage));
         playerButton.setBorder(BorderFactory.createEmptyBorder());
+
+        //todo slider, timer follows clip
+        //Időket jelző labelek és a slider panelja
+        JPanel sliderPanel = new JPanel();
+        sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.X_AXIS));
         //lejátszásbeli időt kijelző Label
         JLabel currentTime = new JLabel("00:00");
 
-        JPanel sliderPanel = new JPanel();
-        sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.X_AXIS));
-        sliderPanel.add(currentTime);
-
-
+        //meghívja a lejátszót
         AudioPlayer player = new AudioPlayer(AUDIOLOCATION);
         player.play();
+        //play/pause gomb listenerje
         playerButton.addActionListener(e -> {
             if (player.isPlaying)
                 player.pause();
             else
                 player.play();
         });
+        //zenében ugráláshoz használt slider
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, (int) player.clip.getMicrosecondLength(), 0);
-        slider.setMajorTickSpacing(10);
-        slider.setMinorTickSpacing(1);
-
         slider.addChangeListener(e -> {
             if (!slider.getValueIsAdjusting()) {
                 long value = slider.getValue();
                 player.jump(value);
             }
         });
-
-        sliderPanel.add(slider);
-
+        //zene végét jelző Label
         JLabel endTime = new JLabel(String.valueOf(player.getTime() / 1000000));
+
+        //sliderpanelhez hozzáadja a komponenseket
+        sliderPanel.add(currentTime);
+        sliderPanel.add(slider);
         sliderPanel.add(endTime);
 
+        //menühöz hozzáadja a komponenseket
         playerPanel.add(playerButton, BorderLayout.WEST);
         playerPanel.add(sliderPanel);
         add(playerPanel, BorderLayout.SOUTH);
+        //ha bezárja a framet a zenét is leállítja
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -86,12 +90,12 @@ public class PlayerFrame extends JFrame {
     }
 
     /**
-     * Resize image buffered image.
+     * Újraméretezi a képet
      *
-     * @param originalImage the original image
-     * @param targetWidth   the target width
-     * @param targetHeight  the target height
-     * @return the buffered image
+     * @param originalImage a formázandó kép
+     * @param targetWidth   a célszélesség
+     * @param targetHeight  a célmagasság
+     * @return a formázott kép
      */
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
@@ -101,7 +105,7 @@ public class PlayerFrame extends JFrame {
     }
 
     /**
-     * Gets image.
+     * Megkeresi és méretezi a képet
      *
      * @param filename the filename
      * @param width    the width
@@ -110,13 +114,13 @@ public class PlayerFrame extends JFrame {
      */
     BufferedImage getImage(String filename, int width, int length) {
         BufferedImage img;
-        //todo slider, timer follows clip
         String PICTURELOCATION = "src/Data/Picture/";
         try {
             img = ImageIO.read(new File(PICTURELOCATION + filename));
             img = resizeImage(img, width, length);
         } catch (IOException e) {
             try {
+                //ha nem találja az eredeti képet, egy stoc kép lesz helyette
                 img = ImageIO.read(new File(PICTURELOCATION + "BaseBackground.png"));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -127,27 +131,23 @@ public class PlayerFrame extends JFrame {
 
     private static class AudioPlayer {
         /**
-         * The Current frame.
-         */
-        Long currentFrame;
-        /**
-         * The Clip.
+         * hanganyag lejátszására használt Clip
          */
         Clip clip;
         /**
-         * The Is playing.
+         * bool arra, hogy éppen megy-e a zene
          */
         boolean isPlaying = false;
         /**
-         * The Audio input stream.
+         * AudioInputStream
          */
         AudioInputStream audioInputStream;
 
 
         /**
-         * Instantiates a new Audio player.
+         * AudioPlayer létrehozása
          *
-         * @param path the path
+         * @param path a zene elérési útja
          */
         public AudioPlayer(String path) {
             try {
@@ -157,16 +157,8 @@ public class PlayerFrame extends JFrame {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            //loopban megy amíg be nem zárják
             clip.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-
-        /**
-         * Is playing boolean.
-         *
-         * @return the boolean
-         */
-        public boolean isPlaying() {
-            return isPlaying;
         }
 
         /**
@@ -186,36 +178,34 @@ public class PlayerFrame extends JFrame {
             if (isPlaying) {
                 clip.stop();
                 isPlaying = false;
-                currentFrame = clip.getMicrosecondPosition();
             }
         }
 
         /**
-         * Jump.
+         * Egy időre ugrik
          *
-         * @param c the c
+         * @param jumpTo az idő, ahova ugornia kell
          */
-        public void jump(long c) {
-            if (c >= 0 && c <= clip.getMicrosecondLength()) {
+        public void jump(long jumpTo) {
+            if (jumpTo >= 0 && jumpTo <= clip.getMicrosecondLength()) {
                 clip.stop();
-                clip.setMicrosecondPosition(c);
-                currentFrame = c;
+                clip.setMicrosecondPosition(jumpTo);
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
                 clip.start();
             }
         }
 
         /**
-         * Gets time.
+         * Megadja, milyen hosszú a szám
          *
-         * @return the time
+         * @return szám hossza
          */
         public Long getTime() {
             return clip.getMicrosecondLength();
         }
 
         /**
-         * Stop.
+         * mikor bezáródik a Frame, le kell állítani a lejátszást
          */
         public void stop() {
             clip.stop();

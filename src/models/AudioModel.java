@@ -159,7 +159,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
      */
     public void removeAudio(int idx){
         audios.remove(idx);
-        fireTableRowsInserted(0, audios.size()-1);
+        fireTableRowsDeleted(0, audios.size() - 1);
     }
 
     /**
@@ -187,6 +187,8 @@ public class AudioModel extends AbstractTableModel implements Serializable {
             audio.setType(type);
         if(!Objects.equals(audio.getBorrowable(), borrowable))
             audio.setBorrowable(borrowable);
+        fireTableRowsUpdated(0, audios.size() - 1);
+
     }
 
     /**
