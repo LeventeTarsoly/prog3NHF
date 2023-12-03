@@ -83,10 +83,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if(columnIndex==6 && !audios.get(rowIndex).getBorrowable())
             return false;
-        else if(columnIndex==5 && audios.get(rowIndex).getBorrower()!=null)
-            return false;
-
-        return true;
+        else return columnIndex != 5 || audios.get(rowIndex).getBorrower() == null;
     }
 
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {

@@ -58,9 +58,7 @@ public class BorrowModel extends DefaultTreeModel {
     public boolean isLeaf(Object node) {
         if(node.getClass()== AudioData.class)
             return true;
-        if(node.getClass()== MemberData.class && ((MemberData) node).getBorroweds().isEmpty())
-            return true;
-        return false;
+        return node.getClass() == MemberData.class && ((MemberData) node).getBorroweds().isEmpty();
     }
 
     @Override

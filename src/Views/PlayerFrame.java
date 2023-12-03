@@ -14,8 +14,8 @@ import java.io.IOException;
 
 public class PlayerFrame extends JFrame {
     //todo slider, timer follows clip
-    private String PICTURELOCATION = "src/Data/Picture/";
-    private String AUDIOLOCATION;
+    private final String PICTURELOCATION = "src/Data/Picture/";
+    private final String AUDIOLOCATION;
 
     public PlayerFrame(String id, String name) {
         super(name);

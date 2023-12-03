@@ -43,7 +43,7 @@ public class BorrowFrame extends JFrame {
 
         // Create a table model with rental history data
         TableModel rentalHistoryTableModel = new TableModel() {
-            public List<AudioData> borrows = rentalHistory;
+            public final List<AudioData> borrows = rentalHistory;
             @Override
             public int getRowCount() {
                 return borrows.size();

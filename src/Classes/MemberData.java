@@ -82,8 +82,7 @@ public class MemberData {
 
     public Boolean equals(MemberData other) {
         if(other != null){
-            if(Objects.equals(other.getName(), getName()) &&other.getPhoneNum()==getPhoneNum()&&getDateOfBirth().equals(other.getDateOfBirth()))
-                return true;
+            return Objects.equals(other.getName(), getName()) && other.getPhoneNum() == getPhoneNum() && getDateOfBirth().equals(other.getDateOfBirth());
         }
         return false;
     }

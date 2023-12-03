@@ -208,7 +208,7 @@ public class MainFrame extends JFrame {
     void setStyleCombobox(){
         ArrayList<String> data = new ArrayList<>();
         data.add("");
-        for (AudioData audio: audioModel.audios) {
+        for (AudioData audio : AudioModel.audios) {
             if(!data.contains(audio.getStyle()))
                 data.add(audio.getStyle());
         }
@@ -263,7 +263,7 @@ public class MainFrame extends JFrame {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(data.getName());
             root.add(node);
         }
-        BorrowModel borrowModel = new BorrowModel(root, MemberModel.members, audioModel.audios);
+        BorrowModel borrowModel = new BorrowModel(root, MemberModel.members, AudioModel.audios);
         borrowTree = new JTree(borrowModel);
         borrowTree.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane borrowScrollPane = new JScrollPane(borrowTree);
@@ -303,13 +303,13 @@ public class MainFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             AudioPanel audioPanel = new AudioPanel();
-            audioPanel.setNameValue(audioModel.audios.get(audioTable.getSelectedRow()).getName());
-            audioPanel.setArtist(audioModel.audios.get(audioTable.getSelectedRow()).getArtist());
-            audioPanel.setReleaseyear(audioModel.audios.get(audioTable.getSelectedRow()).getReleaseYear());
-            audioPanel.setStyle(audioModel.audios.get(audioTable.getSelectedRow()).getStyle());
-            audioPanel.setType(audioModel.audios.get(audioTable.getSelectedRow()).getType());
-            audioPanel.setBorrowable(audioModel.audios.get(audioTable.getSelectedRow()).getBorrowable());
-            MemberData borrower = audioModel.audios.get(audioTable.getSelectedRow()).getBorrower();
+            audioPanel.setNameValue(AudioModel.audios.get(audioTable.getSelectedRow()).getName());
+            audioPanel.setArtist(AudioModel.audios.get(audioTable.getSelectedRow()).getArtist());
+            audioPanel.setReleaseyear(AudioModel.audios.get(audioTable.getSelectedRow()).getReleaseYear());
+            audioPanel.setStyle(AudioModel.audios.get(audioTable.getSelectedRow()).getStyle());
+            audioPanel.setType(AudioModel.audios.get(audioTable.getSelectedRow()).getType());
+            audioPanel.setBorrowable(AudioModel.audios.get(audioTable.getSelectedRow()).getBorrowable());
+            MemberData borrower = AudioModel.audios.get(audioTable.getSelectedRow()).getBorrower();
             if(borrower!=null)
                 audioPanel.removeBorrowableCheckbox();
 
@@ -356,7 +356,7 @@ public class MainFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             int removeid = audioModel.getAudioAt(audioTable.getSelectedRow()).getId();
             memberModel.removeBorrow(removeid);
-            audioModel.audios.get(audioTable.getSelectedRow()).setBorrower(null);
+            AudioModel.audios.get(audioTable.getSelectedRow()).setBorrower(null);
             audioModel.fireTableDataChanged();
             BorrowModel model = (BorrowModel) borrowTree.getModel();
             model.reload();
@@ -419,7 +419,7 @@ public class MainFrame extends JFrame {
     }
     void memberDataChanged(MemberData changedMember){
         for (int id:changedMember.getBorroweds()) {
-            for (AudioData audio:audioModel.audios) {
+            for (AudioData audio : AudioModel.audios) {
                 if(audio.getId()==id)
                     audio.setBorrower(changedMember);
             }
@@ -465,8 +465,7 @@ public class MainFrame extends JFrame {
         @Override
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value != null && value instanceof MemberData) {
-                MemberData data = (MemberData) value;
+            if (value != null && value instanceof MemberData data) {
                 setText(data.getName());
             }
             return this;

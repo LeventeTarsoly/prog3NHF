@@ -49,8 +49,8 @@ public class AudioPanel extends JPanel{
      */
     private final JCheckBox borrowable;
 
-    private JButton addCover;
-    private JButton addAudio;
+    private final JButton addCover;
+    private final JButton addAudio;
 
     /**
      *
