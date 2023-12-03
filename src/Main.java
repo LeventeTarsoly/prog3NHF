@@ -1,13 +1,17 @@
-import Views.LoginFrame;
-import Views.MainFrame;
-import Views.PlayerFrame;
+import views.LoginFrame;
 
-import java.io.IOException;
-
+/**
+ * The type Main.
+ */
 public class Main {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setVisible(true);
-        //todo brain functions, comments, tests, uml, documentaries
+        //todo comments, tests, uml, documentaries
     }
 }

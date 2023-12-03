@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "Name": "Hermann Máté",
+    "DateOfBirth": "11-11-1111",
+    "PhoneNum": 2,
+    "Borroweds": [
+      0
+    ],
+    "BorrowedHistory": [
+      0,
+      0
+    ]
+  }
+]

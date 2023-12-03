@@ -1,1 +1,23 @@
-[{"Id":0,"Name":"1","Artist":"1","ReleaseYear":1,"Style":"1","Type":"Hanglemez","Borrowable":false},{"Id":3,"Name":"4","Artist":"4","ReleaseYear":4,"Style":"4","Type":"Hanglemez","Borrowable":false}]
+[
+  {
+    "Id": 0,
+    "Name": "Utopia",
+    "Artist": "Travis Scott",
+    "ReleaseYear": 2023,
+    "Style": "Trap",
+    "Type": "CD",
+    "Borrowable": false,
+    "Borrower": {
+      "Name": "Hermann Máté",
+      "DateOfBirth": "11-11-1111",
+      "PhoneNum": 2,
+      "Borroweds": [
+        0
+      ],
+      "BorrowedHistory": [
+        0,
+        0
+      ]
+    }
+  }
+]
