@@ -51,7 +51,6 @@ public class LoginFrame extends JFrame {
     }
 
     class LoginButtonActionListener implements ActionListener {
-        //TODO login when button pressed at LoginFrame
         @Override
         public void actionPerformed(ActionEvent e) {
             if (usernameField.getText().equalsIgnoreCase("mehtab") && pwField.getText().equalsIgnoreCase("12345")) {

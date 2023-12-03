@@ -213,7 +213,7 @@ public class MainFrame extends JFrame {
             public void mousePressed(MouseEvent e){
                 if(e.getClickCount()==2){
                     MemberData borrower = memberModel.getMemberAt(memberTable.getSelectedRow());
-                    new BorrowPanel(borrower);
+                    new BorrowFrame(borrower);
                 }
             }
         });
