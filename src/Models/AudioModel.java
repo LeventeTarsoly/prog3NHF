@@ -34,6 +34,9 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     public AudioData getAudioAt(int rowidx){
         return audios.get(rowidx);
     }
+    public AudioData getLastAudio(){
+        return audios.getLast();
+    }
     public Object getValueAt(int rowIndex, int columnIndex) {
         AudioData audio = audios.get(rowIndex);
         if (columnIndex == 6) {
@@ -63,6 +66,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
             case 4 -> res="Típus";
             case 5 -> res="Kölcsönözhető";
             case 6 -> res="Kölcsönző";
+            default -> res="";
         }
         return res;
     }
@@ -161,6 +165,6 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        idcnt = audios.getLast().getId();
+        idcnt = audios.getLast().getId()+1;
     }
 }

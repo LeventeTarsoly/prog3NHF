@@ -69,7 +69,7 @@ public class MemberData {
 
     public void addBorrow(int id){Borroweds.add(id); BorrowedHistory.add(id);}
 
-    public MemberData(Integer id,String  name, LocalDate dateOfBirth, Integer phoneNum){
+    public MemberData(String  name, LocalDate dateOfBirth, Integer phoneNum){
         Name=name;
         DateOfBirth=dateOfBirth;
         PhoneNum=phoneNum;

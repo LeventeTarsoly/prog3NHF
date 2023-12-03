@@ -14,6 +14,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class MainFrame extends JFrame {
         super("Hangkölcsönző");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setExtendedState(Frame.MAXIMIZED_BOTH);
         this.horizontalSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         this.verticalSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         this.horizontalSplitPane.setContinuousLayout(true);
@@ -67,7 +68,7 @@ public class MainFrame extends JFrame {
         lowerPanel.setLayout(new BorderLayout());
         setBorrowerCombobox();
         setTypeCombobox();
-        //todo doubleckick -> playerframe
+
         JPanel audioMenuPanel = new JPanel();
         audioMenuPanel.setBorder(BorderFactory.createEmptyBorder(0,0,4,2));
         JButton audioadd  = new JButton("Hozzáadás");
@@ -125,6 +126,20 @@ public class MainFrame extends JFrame {
         JTextField NameFilter = addTableStringSorter(audioTable,audioModel,NameFilterButton, 15,0);
         JButton ArtistFilterButton = new JButton("Előadó szerint");
         JTextField ArtistFilter = addTableStringSorter(audioTable,audioModel,ArtistFilterButton, 15,1);
+
+        audioTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e){
+                if(e.getClickCount()==2){
+                    AudioData audio = audioModel.getAudioAt(audioTable.getSelectedRow());
+                    File f = new File("src/Data/Audio/"+audio.getId()+".wav");
+                    if(f.exists()){
+                        PlayerFrame playerFrame = new PlayerFrame(String.valueOf(audio.getId()), audio.getName());
+                        playerFrame.setVisible(true);
+                    }
+                }
+            }
+        });
 
         audioMenuPanel.add(audioadd);
         audioMenuPanel.add(audiomodify);
@@ -271,7 +286,12 @@ public class MainFrame extends JFrame {
                     DefaultMutableTreeNode node = new DefaultMutableTreeNode(name);
                     audioModel.addAudio(name, artist, releaseyear, style, type, borrowable, null);
                     setStyleCombobox();
-                    //todo add cover, intro
+                    File audioFile = new File("src/Data/Audio/new.wav");
+                    if(audioFile.exists())
+                        audioFile.renameTo(new File("src/Data/Audio/"+audioModel.getLastAudio().getId()+".wav"));
+                    File coverFile = new File("src/Data/Picture/new.png");
+                    if(coverFile.exists())
+                        coverFile.renameTo(new File("src/Data/Picture/"+audioModel.getLastAudio().getId()+".png"));
                 }
                 catch (Exception E){
                     JOptionPane.showMessageDialog(null, "Rossz formátum", "Hibás formátum", JOptionPane.WARNING_MESSAGE);
@@ -292,7 +312,7 @@ public class MainFrame extends JFrame {
             MemberData borrower = audioModel.audios.get(audioTable.getSelectedRow()).getBorrower();
             if(borrower!=null)
                 audioPanel.removeBorrowableCheckbox();
-            //todo add cover, intro
+
             if (JOptionPane.showConfirmDialog(null, audioPanel.getMainPanel(), "Hanganyag hozzáadása", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
                 try {
                     String name = audioPanel.getNameValue();
@@ -308,6 +328,12 @@ public class MainFrame extends JFrame {
                     model.reload();
                     setBorrowerCombobox();
                     setStyleCombobox();
+                    File audioFile = new File("src/Data/Audio/new.wav");
+                    if(audioFile.exists())
+                        audioFile.renameTo(new File("src/Data/Audio/"+audioModel.getAudioAt(audioTable.getSelectedRow()).getId()+".wav"));
+                    File coverFile = new File("src/Data/Picture/new.png");
+                    if(coverFile.exists())
+                        coverFile.renameTo(new File("src/Data/Picture/"+audioModel.getAudioAt(audioTable.getSelectedRow()).getId()+".png"));
                 }
                 catch (Exception E){
                     JOptionPane.showMessageDialog(null, "Rossz formátum", "Hibás formátum", JOptionPane.WARNING_MESSAGE);

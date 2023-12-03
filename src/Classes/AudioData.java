@@ -46,13 +46,6 @@ public class AudioData {
     Boolean HasAudio;
 
     /**
-     * konstruktor
-     */
-    public AudioData(){
-        Borrowable = true;
-    }
-
-    /**
      * getterek
      */
     public int getId() {
@@ -88,21 +81,9 @@ public class AudioData {
         return Borrower;
     }
 
-    public boolean hasCover() {
-        return HasCover;
-    }
-
-    public boolean hasAudio() {
-        return HasAudio;
-    }
-
-
     /**
      * setterek
      */
-    public void setId(int id) {
-        Id = id;
-    }
 
     public void setName(String name) {
         Name = name;
@@ -131,14 +112,6 @@ public class AudioData {
 
     public void setBorrower(MemberData borrower) {
         Borrower = borrower;
-    }
-
-    public void setHasCover(boolean hasCover) {
-        HasCover = hasCover;
-    }
-
-    public void setHasAudio(boolean hasAudio) {
-        HasAudio = hasAudio;
     }
 
     public AudioData(int id, String name, String artist, Integer releaseyear, String style, Enums.Audiotype type, Boolean borrowable, MemberData borrower){

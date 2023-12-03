@@ -1,9 +1,15 @@
 package Views;
 
 import Classes.Enums;
+import Models.BorrowModel;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Egy audioanyag létrehozásához vagy módosításához használható panel
@@ -43,6 +49,9 @@ public class AudioPanel extends JPanel{
      */
     private final JCheckBox borrowable;
 
+    private JButton addCover;
+    private JButton addAudio;
+
     /**
      *
      */
@@ -59,6 +68,8 @@ public class AudioPanel extends JPanel{
         label.add(new JLabel("Stílus", SwingConstants.RIGHT));
         label.add(new JLabel("Típus", SwingConstants.RIGHT));
         label.add(new JLabel("Kölcsönözhető", SwingConstants.RIGHT));
+        label.add(new JLabel("Borítókép", SwingConstants.RIGHT));
+        label.add(new JLabel("Zeneszám", SwingConstants.RIGHT));
         this.mainPanel.add(label, BorderLayout.WEST);
 
         // a felhasználó által szerkeszthető komponensek létrehozása és panelhez adása
@@ -69,14 +80,54 @@ public class AudioPanel extends JPanel{
         style = new JTextField(10);
         type = new JComboBox(Enums.Audiotype.values());
         borrowable = new JCheckBox();
+        addCover = new JButton("Tallózás");
+        addCover.addActionListener(new addButtonActionListener("png", this));
+        addAudio = new JButton("Tallózás");
+        addAudio.addActionListener(new addButtonActionListener("wav", this));
 
-        this.mainPanel.add(input, BorderLayout.CENTER);
         input.add(name);
         input.add(artist);
         input.add(releaseyear);
         input.add(style);
         input.add(type);
         input.add(borrowable);
+        input.add(addCover);
+        input.add(addAudio);
+        mainPanel.add(input, BorderLayout.CENTER);
+    }
+
+    class addButtonActionListener implements ActionListener {
+        String Extension;
+        JPanel parentPanel;
+        addButtonActionListener(String ext, JPanel panel){
+            Extension = ext;
+            parentPanel = panel;
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter(Extension+" fájlok", Extension));
+            if(fileChooser.showOpenDialog(parentPanel) == JFileChooser.APPROVE_OPTION){
+                if(Extension.equals("png")){
+                    File copied = new File("src/Data/Picture/new.png");
+                    try {
+                        com.google.common.io.Files.copy(fileChooser.getSelectedFile(), copied);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+                else if(Extension.equals("wav")){
+                    File copied = new File("src/Data/Audio/new.wav");
+                    try {
+                        com.google.common.io.Files.copy(fileChooser.getSelectedFile(), copied);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+
+        }
+
     }
     public JPanel getMainPanel() {
         return mainPanel;

@@ -36,5 +36,9 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="library" name="google.guava" level="project" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="def1b470-76b2-41d5-ae18-fd5e1502b16b" />
   </component>
 </module>

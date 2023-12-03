@@ -1,4 +1,8 @@
 import Views.LoginFrame;
+import Views.MainFrame;
+import Views.PlayerFrame;
+
+import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) {
