@@ -26,7 +26,7 @@ public class MemberData {
     /**
      * Kölcsönzött anyagok története
      */
-    ArrayList<Integer> BorrowedHistory = new ArrayList<>();
+    ArrayList<AudioData> BorrowedHistory = new ArrayList<>();
 
 
     /**
@@ -95,11 +95,11 @@ public class MemberData {
     /**
      * Egy új kölcsönzés hozzáadása a kölcsönzések listákhoz
      *
-     * @param id a kikölcsönzött anyag IDja
+     * @param data a kikölcsönzött anyag
      */
-    public void addBorrow(int id) {
-        Borroweds.add(id);
-        BorrowedHistory.add(id);
+    public void addBorrow(AudioData data) {
+        Borroweds.add(data.getId());
+        BorrowedHistory.add(data.copy());
     }
 
     /**
@@ -140,5 +140,9 @@ public class MemberData {
             return Objects.equals(other.getName(), getName()) && Objects.equals(other.getPhoneNum(), getPhoneNum()) && getDateOfBirth().equals(other.getDateOfBirth());
         }
         return false;
+    }
+
+    public List<AudioData> getBorrowedHistory() {
+        return BorrowedHistory;
     }
 }

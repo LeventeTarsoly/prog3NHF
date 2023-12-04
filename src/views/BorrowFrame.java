@@ -26,14 +26,17 @@ public class BorrowFrame extends JFrame {
      */
     final JPanel borrowMenuPanel = new JPanel();
 
+    AudioModel audioModel;
+
     /**
      * BorrowFrame létehozása
      *
      * @param selectedMember a kiválasztott, tag, akinek a kölcsönzéseit
      *                       jeleníti meg a Frame
      */
-    public BorrowFrame(MemberData selectedMember) {
+    public BorrowFrame(MemberData selectedMember, AudioModel audioModel) {
         super("Kölcsönzési történet");
+        this.audioModel=audioModel;
 
         initRentalHistoryTable(selectedMember);
 
@@ -53,7 +56,7 @@ public class BorrowFrame extends JFrame {
      */
 
     private void initRentalHistoryTable(MemberData selectedMember) {
-        List<AudioData> rentalHistory = getRentalHistory(selectedMember);
+        List<AudioData> rentalHistory = selectedMember.getBorrowedHistory();
 
         // A rentalHistory listából csinál egy Modelt a táblához
         TableModel rentalHistoryTableModel = new TableModel() {
@@ -137,7 +140,7 @@ public class BorrowFrame extends JFrame {
         JButton StyleFilterButton = new JButton("Stílus szerint");
         ArrayList<String> data = new ArrayList<>();
         data.add("");
-        for (AudioData audio: AudioModel.audios) {
+        for (AudioData audio: audioModel.getAudios()) {
             if(!data.contains(audio.getStyle()))
                 data.add(audio.getStyle());
         }
@@ -213,7 +216,7 @@ public class BorrowFrame extends JFrame {
      */
     private List<AudioData> getRentalHistory(MemberData selectedMember) {
         List<AudioData> rentalHistory = new ArrayList<>();
-        for (AudioData audio : AudioModel.audios) {
+        for (AudioData audio : audioModel.getAudios()) {
             if (audio.getBorrower() != null && audio.getBorrower().equals(selectedMember)) {
                 rentalHistory.add(audio);
             }

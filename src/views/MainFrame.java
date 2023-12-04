@@ -86,7 +86,7 @@ public class MainFrame extends JFrame {
         //ha bezárod az ablakot elmenti az adatokat
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                audioModel.Serialize();
+                audioModel.Serialize("src/Data/Audios.json");
                 memberModel.Serialize();
             }
         });
@@ -105,7 +105,7 @@ public class MainFrame extends JFrame {
      */
     void initlowerPanel(){
         //inicializálja a táblát és a fő Panelt
-        audioModel.DeSerialize();
+        audioModel.DeSerialize("src/Data/Audios.json");
         audioTable = new JTable(audioModel);
         audioTable.addPropertyChangeListener(new AudioTablePropertyChangedListener());
         JScrollPane audioScrollPane = new JScrollPane(audioTable);
@@ -131,6 +131,16 @@ public class MainFrame extends JFrame {
         //Kiválasztott elem kölcsönzésének törléséhez tartozó gomb
         JButton audioreturn  = new JButton("Visszavétel");
         audioreturn.addActionListener(new AudioReturnButtonActionListener());
+        //Kiválasztott elemnek megnyílik a lejátszó, ha van megadott audio file
+        JButton playAudio  = new JButton("Lejátszás");
+        playAudio.addActionListener(e -> {
+            AudioData audio = audioModel.getAudioAt(audioTable.getSelectedRow());
+            File f = new File("src/Data/Audio/" + audio.getId() + ".wav");
+            if (f.exists()) {
+                PlayerFrame playerFrame = new PlayerFrame(String.valueOf(audio.getId()), audio.getName());
+                playerFrame.setVisible(true);
+            }
+        });
 
         //Létrehozza a szűréshez a komponenseket
         //Szűrés Label
@@ -188,26 +198,12 @@ public class MainFrame extends JFrame {
         JButton ArtistFilterButton = new JButton("Előadó szerint");
         JTextField ArtistFilter = addTableStringSorter(audioTable,audioModel,ArtistFilterButton, 15,1);
 
-        //Ha kétszer kattintunk egy anyagra, megnyílik a lejátszó, ha van megadott audio file
-        audioTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e){
-                if(e.getClickCount()==2){
-                    AudioData audio = audioModel.getAudioAt(audioTable.getSelectedRow());
-                    File f = new File("src/Data/Audio/"+audio.getId()+".wav");
-                    if(f.exists()){
-                        PlayerFrame playerFrame = new PlayerFrame(String.valueOf(audio.getId()), audio.getName());
-                        playerFrame.setVisible(true);
-                    }
-                }
-            }
-        });
-
         //A menü Panelhez hozzáadja a komponenseket
         audioMenuPanel.add(audioadd);
         audioMenuPanel.add(audiomodify);
         audioMenuPanel.add(audiodelete);
         audioMenuPanel.add(audioreturn);
+        audioMenuPanel.add(playAudio);
         audioMenuPanel.add(SortLabel);
         audioMenuPanel.add(NameFilter);
         audioMenuPanel.add(NameFilterButton);
@@ -271,7 +267,7 @@ public class MainFrame extends JFrame {
             a taghoz hozzáadja a kölcsönzést és frissíti a kölcsönzési fát
             */
             if (selectedRow != -1 && selectedMember != null) {
-                selectedMember.addBorrow(audioModel.getAudioAt(selectedRow).getId());
+                selectedMember.addBorrow(audioModel.getAudioAt(selectedRow));
 
                 BorrowModel model = (BorrowModel) borrowTree.getModel();
                 model.reload();
@@ -295,7 +291,7 @@ public class MainFrame extends JFrame {
     void setStyleCombobox(){
         ArrayList<String> data = new ArrayList<>();
         data.add("");
-        for (AudioData audio : AudioModel.audios) {
+        for (AudioData audio : audioModel.getAudios()) {
             if(!data.contains(audio.getStyle()))
                 data.add(audio.getStyle());
         }
@@ -316,16 +312,6 @@ public class MainFrame extends JFrame {
         memberTable = new JTable(memberModel);
         memberTable.addPropertyChangeListener(new MemberTablePropertyChangedListener());
 
-        //Ha kétszer kattintunk egy tagra, megnyílik a kölcsönzési történetet mutató Frame
-        memberTable.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e){
-                if(e.getClickCount()==2){
-                    MemberData borrower = memberModel.getMemberAt(memberTable.getSelectedRow());
-                    new BorrowFrame(borrower);
-                }
-            }
-        });
         JScrollPane memberScrollPane = new JScrollPane(memberTable);
 
         //A tábla feletti komponenseket tartalmazó Panel
@@ -340,6 +326,12 @@ public class MainFrame extends JFrame {
         //Kiválasztott elem törléséhez tartozó gomb
         JButton memberdelete = new JButton("Törlés");
         memberdelete.addActionListener(new MemberDeleteButtonActionListener());
+        //Kiválasztott elem kölcsönzési történetét mutató Frame megnyitása
+        JButton openHistory = new JButton("Kölcsönzések");
+        openHistory.addActionListener(e -> {
+            MemberData borrower = memberModel.getMemberAt(memberTable.getSelectedRow());
+            new BorrowFrame(borrower, audioModel);
+        });
 
         //Létrehozza a név szerinti szűréshez a komponenseket
         JButton FilterButton = new JButton("Szűrés név szerint");
@@ -349,6 +341,7 @@ public class MainFrame extends JFrame {
         memberMenuPanel.add(memberadd);
         memberMenuPanel.add(membermodify);
         memberMenuPanel.add(memberdelete);
+        memberMenuPanel.add(openHistory);
         memberMenuPanel.add(NameFilter);
         memberMenuPanel.add(FilterButton);
 
@@ -363,7 +356,7 @@ public class MainFrame extends JFrame {
      */
     void initborrowTree(){
         root = new DefaultMutableTreeNode("Tagok kölcsönzései:");
-        BorrowModel borrowModel = new BorrowModel(root, MemberModel.getMembers(), AudioModel.audios);
+        BorrowModel borrowModel = new BorrowModel(root, MemberModel.getMembers(), audioModel.getAudios());
         borrowTree = new JTree(borrowModel);
         borrowTree.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane borrowScrollPane = new JScrollPane(borrowTree);
@@ -415,13 +408,13 @@ public class MainFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             AudioPanel audioPanel = new AudioPanel();
             //betölti az eredeti adatokat
-            audioPanel.setNameValue(AudioModel.audios.get(audioTable.getSelectedRow()).getName());
-            audioPanel.setArtist(AudioModel.audios.get(audioTable.getSelectedRow()).getArtist());
-            audioPanel.setReleaseyear(AudioModel.audios.get(audioTable.getSelectedRow()).getReleaseYear());
-            audioPanel.setStyle(AudioModel.audios.get(audioTable.getSelectedRow()).getStyle());
-            audioPanel.setType(AudioModel.audios.get(audioTable.getSelectedRow()).getType());
-            audioPanel.setBorrowable(AudioModel.audios.get(audioTable.getSelectedRow()).getBorrowable());
-            MemberData borrower = AudioModel.audios.get(audioTable.getSelectedRow()).getBorrower();
+            audioPanel.setNameValue(audioModel.getAudioAt(audioTable.getSelectedRow()).getName());
+            audioPanel.setArtist(audioModel.getAudioAt(audioTable.getSelectedRow()).getArtist());
+            audioPanel.setReleaseyear(audioModel.getAudioAt(audioTable.getSelectedRow()).getReleaseYear());
+            audioPanel.setStyle(audioModel.getAudioAt(audioTable.getSelectedRow()).getStyle());
+            audioPanel.setType(audioModel.getAudioAt(audioTable.getSelectedRow()).getType());
+            audioPanel.setBorrowable(audioModel.getAudioAt(audioTable.getSelectedRow()).getBorrowable());
+            MemberData borrower = audioModel.getAudioAt(audioTable.getSelectedRow()).getBorrower();
             //ha van kölcsönző, kiszedi a kölcsönözhetőség checkboxát
             if(borrower!=null)
                 audioPanel.removeBorrowableCheckbox();
@@ -467,7 +460,14 @@ public class MainFrame extends JFrame {
     class AudioDeleteButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            //ha törlünk egy hanganyagot, a kölcsönzések kzül is törölni kell
+            //ha volt tallózva neki file, azt is törli
+            File audioFile = new File("src/Data/Audio/"+audioModel.getAudioAt(audioTable.getSelectedRow()).getId()+".wav");
+            if(audioFile.exists())
+                audioFile.delete();
+            File coverFile = new File("src/Data/Picture/"+audioModel.getAudioAt(audioTable.getSelectedRow()).getId()+".png");
+            if(coverFile.exists())
+                coverFile.delete();
+            //ha törlünk egy hanganyagot, a kölcsönzések közül is törölni kell
             memberModel.removeBorrow(audioModel.getAudioAt(audioTable.getSelectedRow()).getId());
             audioModel.removeAudio(audioTable.getSelectedRow());
             //fa frissítése
@@ -487,7 +487,7 @@ public class MainFrame extends JFrame {
             int removeid = audioModel.getAudioAt(audioTable.getSelectedRow()).getId();
             memberModel.removeBorrow(removeid);
             //kitörli a kölcsönzést a hanganyagból
-            AudioModel.audios.get(audioTable.getSelectedRow()).setBorrower(null);
+            audioModel.getAudioAt(audioTable.getSelectedRow()).setBorrower(null);
             audioModel.fireTableDataChanged();
             //frissíti a fát
             BorrowModel model = (BorrowModel) borrowTree.getModel();
@@ -576,7 +576,7 @@ public class MainFrame extends JFrame {
      */
     void memberDataChanged(MemberData changedMember){
         for (int id:changedMember.getBorroweds()) {
-            for (AudioData audio : AudioModel.audios) {
+            for (AudioData audio : audioModel.getAudios()) {
                 if(audio.getId()==id)
                     audio.setBorrower(changedMember);
             }
@@ -589,7 +589,7 @@ public class MainFrame extends JFrame {
     class MemberDeleteButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            memberModel.removeMember(memberTable.getSelectedRow());
+            memberModel.removeMember(audioModel, memberTable.getSelectedRow());
             //frissíti a kölcsönzők comboboxát a hanganyagok táblájában
             setBorrowerCombobox();
             audioModel.fireTableDataChanged();

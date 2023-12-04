@@ -11,7 +11,6 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -21,7 +20,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     /**
      * Az anyagok adatainak listája
      */
-    public static List<AudioData> audios = new ArrayList<>();
+    private ArrayList<AudioData> audios;
 
     /**
      * Új lista létrehozása
@@ -37,6 +36,11 @@ public class AudioModel extends AbstractTableModel implements Serializable {
      * hogy ne kapjon az új anyag olyan ID-t, ami már létezik
      */
     int idcnt = 0;
+
+    public  ArrayList<AudioData> getAudios() {
+        return (ArrayList<AudioData>) audios;
+    }
+
     @Override
     public int getRowCount() {
         return audios.size();
@@ -63,7 +67,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
      * @return Az utolsó AudioData
      */
     public AudioData getLastAudio(){
-        return audios.getLast();
+        return audios.get(audios.size() - 1);
     }
 
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -159,7 +163,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
      */
     public void removeAudio(int idx){
         audios.remove(idx);
-        fireTableRowsDeleted(0, audios.size() - 1);
+        fireTableRowsDeleted(0, audios.isEmpty() ? 0 :audios.size()-1);
     }
 
     /**
@@ -194,8 +198,8 @@ public class AudioModel extends AbstractTableModel implements Serializable {
     /**
      * AudioModel Deszerializálása Google gson segítségével
      */
-    public void DeSerialize(){
-        File file = new File("src/Data/Audios.json");
+    public void DeSerialize(String path){
+        File file = new File(path);
         if(file.exists()){
             GsonBuilder gsonBuilder = new GsonBuilder();
             //Dátum formátum deszerializálásához használt deszerializáló
@@ -219,14 +223,14 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         }
         //ID generálásához használt segédváltozó beállítása az eddigi maximális ID értékre+1
         if (!audios.isEmpty())
-            idcnt = audios.getLast().getId() + 1;
+            idcnt = audios.get(audios.size() - 1).getId() + 1;
     }
 
     /**
      * AudioModel Szerializálása Google gson segítségével.
      */
-    public void Serialize(){
-        File file = new File("src/Data/Audios.json");
+    public void Serialize(String path){
+        File file = new File(path);
         GsonBuilder gsonBuilder = new GsonBuilder();
         //Dátum formátum szerializálásához használt szerializáló
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
@@ -242,5 +246,13 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean equals(AudioModel other){
+        for (int i = 0; i < this.getAudios().size(); i++) {
+            if(!getAudioAt(i).equals(other.getAudioAt(i)))
+                return false;
+        }
+        return true;
     }
 }

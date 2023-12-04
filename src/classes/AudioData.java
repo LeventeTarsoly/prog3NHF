@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.Objects;
+
 /**
  * Audiovizuális anyag osztálya
  */
@@ -107,7 +109,7 @@ public class AudioData {
      * @return MemberDataként a kölcsönző
      */
     public MemberData getBorrower() {
-        return Borrower;
+        return Borrower!=null ? Borrower : null;
     }
 
     /**
@@ -195,5 +197,28 @@ public class AudioData {
         Type=type;
         Borrowable=borrowable;
         Borrower=borrower;
+    }
+
+    /**
+     * A kölcsönzési történethez használt másoló, hogy ne deep copy legyen
+     * @return a jelenlegi AudioData másolata
+     */
+    public AudioData copy() {
+        return new AudioData(0, getName(), getArtist(), getReleaseYear(), getStyle(), getType(), false, null);
+    }
+
+    /**
+     * equals a tesztekhez
+     * @param other a másik összehasonlítandó AudioData
+     * @return true ha megegyeznek, false ha nem
+     */
+    public boolean equals(AudioData other){
+        if(getId() == other.getId() && getName().equals(other.getName())
+                && getArtist().equals(other.getArtist()) && getReleaseYear()==other.getReleaseYear()
+                && Objects.equals(getStyle(), other.getStyle()) && getType() == other.getType()
+                && getBorrowable() == other.getBorrowable())
+
+            return true;
+        return false;
     }
 }

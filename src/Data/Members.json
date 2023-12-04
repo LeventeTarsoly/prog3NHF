@@ -1,9 +1,1 @@
-[
-  {
-    "Name": "asd",
-    "DateOfBirth": "11-11-1111",
-    "PhoneNum": "3213214124526",
-    "Borroweds": [],
-    "BorrowedHistory": []
-  }
-]
+[{"Name":"Hermann Máté","DateOfBirth":"29-08-2003","PhoneNum":"06701234567","Borroweds":[],"BorrowedHistory":[{"Id":0,"Name":"Utopia","Artist":"Travis Scott","ReleaseYear":2023,"Style":"Trap","Type":"CD","Borrowable":false},{"Id":0,"Name":"My Beautiful Dark Twisted Fantasy","Artist":"Kanye West","ReleaseYear":2010,"Style":"Hiphop","Type":"Hanglemez","Borrowable":false}]}]

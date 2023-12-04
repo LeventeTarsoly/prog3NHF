@@ -20,7 +20,7 @@ public class MemberModel extends AbstractTableModel {
     /**
      * A tagok adatainak listája
      */
-    public static final List<MemberData> members = new ArrayList<>();
+    private static final List<MemberData> members = new ArrayList<>();
 
     /**
      * A tagok listájának gettere
@@ -106,9 +106,9 @@ public class MemberModel extends AbstractTableModel {
      *
      * @param idx a törlendő MemberData helye
      */
-    public void removeMember(int idx) {
+    public void removeMember(AudioModel audioModel, int idx) {
         //ha kitörlök egy elemet a tagok közül, a kölcsönzések közül is törölni kell
-        for (AudioData audio:AudioModel.audios) {
+        for (AudioData audio : audioModel.getAudios()) {
             if(members.get(idx).equals(audio.getBorrower()))
                 audio.setBorrower(null);
         }
