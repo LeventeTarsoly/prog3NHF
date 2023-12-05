@@ -35,7 +35,6 @@ public class LoginFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(350, 190);
-        setLocation(new Point(800, 450));
         setLayout(new GridLayout(3, 1));
 
         //Létrehozza a Paneleket,és a kompononseket
@@ -72,7 +71,7 @@ public class LoginFrame extends JFrame {
     class LoginButtonActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (usernameField.getText().equalsIgnoreCase("mehtab") && pwField.getText().equalsIgnoreCase("12345")) {
+            if (usernameField.getText().equalsIgnoreCase("tarsolyl") && pwField.getText().equalsIgnoreCase("proghf")) {
                 dispose();
 
                 MainFrame mainFrame = new MainFrame();

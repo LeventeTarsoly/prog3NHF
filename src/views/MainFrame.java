@@ -87,7 +87,7 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 audioModel.Serialize("src/Data/Audios.json");
-                memberModel.Serialize("src/Data/Audios.json");
+                memberModel.Serialize("src/Data/Members.json");
             }
         });
 
@@ -146,6 +146,14 @@ public class MainFrame extends JFrame {
         //Szűrés Label
         JLabel SortLabel = new JLabel("Szűrés:");
 
+        //Cím szerinti szűrés gombja, szövegdoboza
+        JButton NameFilterButton = new JButton("Cím szerint");
+        JTextField NameFilter = addTableStringSorter(audioTable,audioModel,NameFilterButton, 5,0);
+
+        //Előadó szerinti szűrés gombja, szövegdoboza
+        JButton ArtistFilterButton = new JButton("Előadó szerint");
+        JTextField ArtistFilter = addTableStringSorter(audioTable,audioModel,ArtistFilterButton, 5,1);
+
         //Stílus szerinti szűrés gombja, szövegdoboza
         JButton StyleFilterButton = new JButton("Stílus szerint");
         setStyleCombobox();
@@ -190,13 +198,6 @@ public class MainFrame extends JFrame {
             else
                 TableSorter.setRowFilter(null);
         });
-
-        //Cím szerinti szűrés gombja, szövegdoboza
-        JButton NameFilterButton = new JButton("Cím szerint");
-        JTextField NameFilter = addTableStringSorter(audioTable,audioModel,NameFilterButton, 15,0);
-        //Előadó szerinti szűrés gombja, szövegdoboza
-        JButton ArtistFilterButton = new JButton("Előadó szerint");
-        JTextField ArtistFilter = addTableStringSorter(audioTable,audioModel,ArtistFilterButton, 15,1);
 
         //A menü Panelhez hozzáadja a komponenseket
         audioMenuPanel.add(audioadd);
