@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//todo
+
 class MemberDataTest {
     private MemberData testData = new MemberData("Kovács Béla", LocalDate.of(2023,12,5), "123456789");
 
