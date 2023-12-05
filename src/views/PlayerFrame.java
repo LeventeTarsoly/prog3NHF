@@ -43,13 +43,6 @@ public class PlayerFrame extends JFrame {
         playerButton.setIcon(new ImageIcon(buttonImage));
         playerButton.setBorder(BorderFactory.createEmptyBorder());
 
-        //todo slider, timer follows clip
-        //Időket jelző labelek és a slider panelja
-        JPanel sliderPanel = new JPanel();
-        sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.X_AXIS));
-        //lejátszásbeli időt kijelző Label
-        JLabel currentTime = new JLabel("00:00");
-
         //meghívja a lejátszót
         AudioPlayer player = new AudioPlayer(AUDIOLOCATION);
         player.play();
@@ -68,17 +61,10 @@ public class PlayerFrame extends JFrame {
                 player.jump(value);
             }
         });
-        //zene végét jelző Label
-        JLabel endTime = new JLabel(String.valueOf(player.getTime() / 1000000));
-
-        //sliderpanelhez hozzáadja a komponenseket
-        sliderPanel.add(currentTime);
-        sliderPanel.add(slider);
-        sliderPanel.add(endTime);
 
         //menühöz hozzáadja a komponenseket
         playerPanel.add(playerButton, BorderLayout.WEST);
-        playerPanel.add(sliderPanel);
+        playerPanel.add(slider);
         add(playerPanel, BorderLayout.SOUTH);
         //ha bezárja a framet a zenét is leállítja
         this.addWindowListener(new WindowAdapter() {
