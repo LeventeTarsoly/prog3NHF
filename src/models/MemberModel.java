@@ -20,14 +20,18 @@ public class MemberModel extends AbstractTableModel {
     /**
      * A tagok adatainak listája
      */
-    private static final List<MemberData> members = new ArrayList<>();
+    private List<MemberData> members = new ArrayList<>();
 
     /**
      * A tagok listájának gettere
      *
      * @return a tagok listája
      */
-    public static List<MemberData> getMembers(){return members;}
+
+    public MemberModel(List<MemberData> memberDataList){
+        members=memberDataList;
+    }
+    public List<MemberData> getMembers(){return members;}
     @Override
     public int getRowCount() {
         return members.size();
@@ -150,8 +154,8 @@ public class MemberModel extends AbstractTableModel {
     /**
      * MemberModel Deszerializálása Google gson segítségével
      */
-    public void DeSerialize(){
-        File file = new File("src/Data/Members.json");
+    public void DeSerialize(String path){
+        File file = new File(path);
         if(file.exists()){
             GsonBuilder gsonBuilder = new GsonBuilder();
             //Dátum formátum deszerializálásához használt deszerializáló
@@ -178,8 +182,8 @@ public class MemberModel extends AbstractTableModel {
     /**
      * MemberModel Szerializálása Google gson segítségével.
      */
-    public void Serialize(){
-        File file = new File("src/Data/Members.json");
+    public void Serialize(String path){
+        File file = new File(path);
         GsonBuilder gsonBuilder = new GsonBuilder();
         //Dátum formátum szerializálásához használt szerializáló
         gsonBuilder.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
@@ -196,5 +200,11 @@ public class MemberModel extends AbstractTableModel {
             throw new RuntimeException(e);
         }
     }
-
+    public boolean equals(MemberModel other){
+        for (int i = 0; i < this.getMembers().size(); i++) {
+            if(!getMemberAt(i).equals(other.getMemberAt(i)))
+                return false;
+        }
+        return true;
+    }
 }

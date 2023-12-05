@@ -74,10 +74,7 @@ public class AudioModel extends AbstractTableModel implements Serializable {
         AudioData audio = audios.get(rowIndex);
         //ha a kölcsönző oszlopát kell visszaadni, meg kel nézni, van-e neki egyáltalán
         if (columnIndex == 6) {
-            for (MemberData member : MemberModel.getMembers()) {
-                    if(member.equals(audio.getBorrower()))
-                        return member.getName();
-                }
+            return audio.getBorrower()!=null ? audio.getBorrower().getName() : null;
         }
         return switch (columnIndex) {
             case 0 -> audio.getName();

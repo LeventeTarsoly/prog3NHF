@@ -59,7 +59,7 @@ public class MainFrame extends JFrame {
     /**
      * A tagok táblájához tartozó model
      */
-    final MemberModel memberModel = new MemberModel();
+    final MemberModel memberModel = new MemberModel(new ArrayList<>());
     /**
      * A fához tartozó gyökér
      */
@@ -87,7 +87,7 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 audioModel.Serialize("src/Data/Audios.json");
-                memberModel.Serialize();
+                memberModel.Serialize("src/Data/Audios.json");
             }
         });
 
@@ -255,7 +255,7 @@ public class MainFrame extends JFrame {
         betölti a tagokat a listából
          */
         comboBox.setRenderer(new BorrowerCellRenderer());
-        for (MemberData member:MemberModel.getMembers()) {
+        for (MemberData member:memberModel.getMembers()) {
             comboBox.addItem(member);
         }
         comboBox.addItemListener(e -> {
@@ -305,7 +305,7 @@ public class MainFrame extends JFrame {
         /*
         inicializálja a táblát és a fő Panelt
          */
-        memberModel.DeSerialize();
+        memberModel.DeSerialize("src/Data/Members.json");
         leftPanel = new JPanel();
         leftPanel.setBorder(BorderFactory.createEmptyBorder(5,8,5,5));
         leftPanel.setLayout(new BorderLayout());
@@ -356,7 +356,7 @@ public class MainFrame extends JFrame {
      */
     void initborrowTree(){
         root = new DefaultMutableTreeNode("Tagok kölcsönzései:");
-        BorrowModel borrowModel = new BorrowModel(root, MemberModel.getMembers(), audioModel.getAudios());
+        BorrowModel borrowModel = new BorrowModel(root, memberModel.getMembers(), audioModel.getAudios());
         borrowTree = new JTree(borrowModel);
         borrowTree.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane borrowScrollPane = new JScrollPane(borrowTree);
@@ -538,7 +538,7 @@ public class MainFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             MemberPanel memberPanel = new MemberPanel();
             //betölti az eredeti adatokat
-            MemberData selectedMember = MemberModel.getMembers().get(memberTable.getSelectedRow());
+            MemberData selectedMember = memberModel.getMembers().get(memberTable.getSelectedRow());
             memberPanel.setNameValue(selectedMember.getName());
             memberPanel.setDateOfBirth(selectedMember.getDateOfBirth().toString());
             memberPanel.setPhone(selectedMember.getPhoneNum());
@@ -624,7 +624,7 @@ public class MainFrame extends JFrame {
                 BorrowModel model = (BorrowModel) borrowTree.getModel();
                 model.reload();
                 //frissíti a hanganyok tábláját
-                MemberData selectedMember = MemberModel.getMembers().get(memberTable.getSelectedRow());
+                MemberData selectedMember = memberModel.getMembers().get(memberTable.getSelectedRow());
                 memberDataChanged(selectedMember);
                 setBorrowerCombobox();
                 audioModel.fireTableDataChanged();
