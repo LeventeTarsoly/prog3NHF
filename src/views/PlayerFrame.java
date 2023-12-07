@@ -11,11 +11,14 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 
 /**
  * A lejátszó Frameje
  */
 public class PlayerFrame extends JFrame {
+    static Timer timer;
 
     /**
      * Lejátszó inicializálása
@@ -43,6 +46,13 @@ public class PlayerFrame extends JFrame {
         playerButton.setIcon(new ImageIcon(buttonImage));
         playerButton.setBorder(BorderFactory.createEmptyBorder());
 
+        //Időket jelző labelek és a slider panelja
+        JPanel sliderPanel = new JPanel();
+        sliderPanel.setLayout(new BoxLayout(sliderPanel, BoxLayout.X_AXIS));
+        Format f = new SimpleDateFormat("mm:ss");
+        //lejátszásbeli időt kijelző Label
+        JLabel currentTime = new JLabel("00:00");
+
         //meghívja a lejátszót
         AudioPlayer player = new AudioPlayer(AUDIOLOCATION);
         player.play();
@@ -53,18 +63,42 @@ public class PlayerFrame extends JFrame {
             else
                 player.play();
         });
+
         //zenében ugráláshoz használt slider
         JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, (int) player.clip.getMicrosecondLength(), 0);
+        slider.setMaximum((player.getTime()));
+        //időben ugráshoz használt listener
         slider.addChangeListener(e -> {
-            if (!slider.getValueIsAdjusting()) {
+            if (slider.getValueIsAdjusting()) {
                 long value = slider.getValue();
                 player.jump(value);
             }
         });
 
+        // timer, ami állítja a slider pozícióját, és a currenttime labelt a clip alapján
+        timer = new Timer(1, e -> {
+            String strMinute = f.format(player.getPosition() / 1000);
+            currentTime.setText(strMinute);
+            slider.setValue(player.getPosition());
+            //ha újraindul a loop miatt a szám, akkor a clipet az elejére állítja, hogy a timer is nullázódjon
+            if (player.getPosition() >= (player.getTime())) {
+                player.resetClip();
+            }
+        });
+        timer.start();
+
+        //zene végét jelző Label
+        String strMinute = f.format(player.getTime() / 1000);
+        JLabel endTime = new JLabel(strMinute);
+
+        //sliderpanelhez hozzáadja a komponenseket
+        sliderPanel.add(currentTime);
+        sliderPanel.add(slider);
+        sliderPanel.add(endTime);
+
         //menühöz hozzáadja a komponenseket
         playerPanel.add(playerButton, BorderLayout.WEST);
-        playerPanel.add(slider);
+        playerPanel.add(sliderPanel);
         add(playerPanel, BorderLayout.SOUTH);
         //ha bezárja a framet a zenét is leállítja
         this.addWindowListener(new WindowAdapter() {
@@ -186,8 +220,24 @@ public class PlayerFrame extends JFrame {
          *
          * @return szám hossza
          */
-        public Long getTime() {
-            return clip.getMicrosecondLength();
+        public int getTime() {
+            return (int) clip.getMicrosecondLength();
+        }
+
+        /**
+         * Megadja a jelenlegi időt a számban
+         *
+         * @return számbeli idő
+         */
+        public int getPosition() {
+            return (int) clip.getMicrosecondPosition();
+        }
+
+        /**
+         * Reseteli a clipet
+         */
+        public void resetClip() {
+            clip.setMicrosecondPosition(0);
         }
 
         /**
